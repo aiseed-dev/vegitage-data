@@ -1,0 +1,152 @@
+"""
+野菜エントリーのデータスキーマ定義（Pydantic v2）
+
+計画書 4.1 野菜エントリースキーマに準拠
+"""
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, Field
+
+
+# --- 共通サブモデル ---
+
+class MultilingualName(BaseModel):
+    """多言語名称"""
+    local: str = Field(description="現地語名（イタリア語/日本語）")
+    japanese: str = Field(description="日本語名")
+    english: str = Field(description="英語名")
+    scientific: str = Field(default="", description="学名")
+
+
+class Origin(BaseModel):
+    """原産地情報"""
+    country: str
+    region: str
+    specific_town: Optional[str] = None
+    history: str = Field(description="歴史的背景（100-200文字目安）")
+    predecessor: Optional[str] = None
+
+
+class AppearanceDetail(BaseModel):
+    shape: str
+    color: str
+    size: str
+
+
+class TasteDetail(BaseModel):
+    description: str
+    notes: Optional[str] = None
+
+
+class TextureDetail(BaseModel):
+    flesh: str
+    seeds: Optional[str] = None
+    skin: Optional[str] = None
+
+
+class Characteristics(BaseModel):
+    """特徴"""
+    appearance: AppearanceDetail | str
+    taste: TasteDetail | str
+    texture: TextureDetail | str
+    nutrition: dict[str, str]
+
+
+class SoilRequirements(BaseModel):
+    type: str
+    ph: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class ClimateInfo(BaseModel):
+    ideal: str
+    temperature: Optional[str] = None
+    humidity: Optional[str] = None
+
+
+class NaturalFarmingTips(BaseModel):
+    companion_planting: Optional[str] = None
+    pruning: Optional[str] = None
+    watering: Optional[str] = None
+    fertilizer: Optional[str] = None
+    disease_prevention: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class Cultivation(BaseModel):
+    """栽培情報"""
+    type: Optional[str] = None
+    sowing_period: str = Field(description="播種期")
+    transplant_timing: Optional[str] = None
+    harvest_period: str = Field(description="収穫期")
+    days_to_maturity: Optional[str] = None
+    soil_requirements: SoilRequirements | str
+    climate: ClimateInfo | str
+    spacing: Optional[str] = None
+    pests_diseases: list[str] = Field(default_factory=list)
+    natural_farming_tips: NaturalFarmingTips | str = Field(
+        default="", description="自然農法でのコツ"
+    )
+    harvesting: Optional[str] = None
+
+
+class CulinaryUses(BaseModel):
+    """調理用途"""
+    best_for: list[str]
+    why_suitable: Optional[dict[str, str]] = None
+    not_recommended: Optional[str] = None
+
+
+class RelatedRecipe(BaseModel):
+    """関連料理"""
+    id: str = Field(pattern=r"^[A-Z]{2}-RCP-[A-Z]{3}-\d{3}$")
+    name: str
+    relationship: Optional[str] = None
+
+
+class Source(BaseModel):
+    """出典情報"""
+    url: str
+    type: Optional[str] = None
+    reliability: Optional[str] = Field(default=None, pattern=r"^(high|medium|low)$")
+    language: Optional[str] = None
+
+
+class CompletenessScores(BaseModel):
+    basic_info: Optional[float] = None
+    cultivation: Optional[float] = None
+    culinary: Optional[float] = None
+    cultural: Optional[float] = None
+    sources: Optional[float] = None
+
+
+class Metadata(BaseModel):
+    """メタデータ"""
+    collected_at: str = Field(description="ISO 8601形式の収集日時")
+    agent_version: str = "1.0.0"
+    research_method: Optional[str] = None
+    confidence_score: float = Field(ge=0.0, le=1.0, description="信頼度スコア")
+    completeness: Optional[CompletenessScores] = None
+    languages_searched: list[str] = Field(default_factory=list)
+    cross_check_status: Optional[str] = None
+    needs_review: list[str] = Field(default_factory=list)
+
+
+# --- メインモデル ---
+
+class VegetableEntry(BaseModel):
+    """野菜エントリー（計画書 4.1 準拠）"""
+    id: str = Field(pattern=r"^[A-Z]{2}-VEG-[A-Z]{3}-\d{3}$")
+    names: MultilingualName
+    origin: Origin
+    characteristics: Characteristics
+    cultivation: Cultivation
+    culinary_uses: CulinaryUses | list[str]
+    related_recipes: list[RelatedRecipe | str] = Field(default_factory=list)
+    cultural_significance: dict | str = ""
+    sources: list[Source | str] = Field(default_factory=list)
+    metadata: Metadata
