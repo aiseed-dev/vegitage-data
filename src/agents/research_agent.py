@@ -22,7 +22,6 @@ from typing import Literal
 
 from claude_code_sdk import (
     ClaudeCodeOptions,
-    ClaudeSDKClient,
     Message,
     ResultMessage,
     AssistantMessage,
@@ -308,19 +307,10 @@ class ResearchAgent:
     async def _deep_research_vegetable(
         self, name: str, entry_id: str, basic_context: str
     ) -> str:
-        """栽培 + 料理・文化の深堀り — Stateful conversation"""
-        options = ClaudeCodeOptions(
-            model=self.model,
-            system_prompt=VEGETABLE_RESEARCH_PROMPT,
-            allowed_tools=["WebSearch"],
-            permission_mode="bypassPermissions",
-            max_turns=6,
-        )
+        """栽培 + 料理・文化の深堀り — コンテキスト引き継ぎで連続 query"""
 
-        async with ClaudeSDKClient(options=options) as client:
-            # ターン1: 栽培情報
-            await client.connect(
-                prompt=f"""これまでの基本調査結果:
+        # ターン1: 栽培情報
+        cultivation_prompt = f"""これまでの基本調査結果:
 {basic_context[:3000]}
 
 上記を踏まえて「{name}」の栽培方法を深堀りしてください:
@@ -331,16 +321,28 @@ class ResearchAgent:
 5. 収穫時期と方法
 
 出典URLを必ず含めてください。"""
-            )
-            cultivation_parts: list[str] = []
-            async for msg in client.receive_response():
-                text = _extract_text([msg])
-                if text:
-                    cultivation_parts.append(text)
 
-            # ターン2: 料理・文化
-            await client.query(
-                prompt=f"""次に「{name}」の料理・文化面を調査してください:
+        cultivation_msgs: list[Message] = []
+        async for msg in query(
+            prompt=cultivation_prompt,
+            options=ClaudeCodeOptions(
+                model=self.model,
+                system_prompt=VEGETABLE_RESEARCH_PROMPT,
+                allowed_tools=["WebSearch"],
+                permission_mode="bypassPermissions",
+                max_turns=3,
+            ),
+        ):
+            cultivation_msgs.append(msg)
+
+        cultivation_text = _extract_text(cultivation_msgs)
+
+        # ターン2: 料理・文化
+        culinary_prompt = f"""これまでの調査結果:
+{basic_context[:1500]}
+{cultivation_text[:1500]}
+
+次に「{name}」の料理・文化面を調査してください:
 1. 代表的な調理用途
 2. この野菜を使う伝統料理
 3. なぜこの野菜が料理に適しているか
@@ -348,14 +350,23 @@ class ResearchAgent:
 5. 関連する祭事やイベント
 
 出典URLを必ず含めてください。"""
-            )
-            culinary_parts: list[str] = []
-            async for msg in client.receive_response():
-                text = _extract_text([msg])
-                if text:
-                    culinary_parts.append(text)
 
-        return "\n\n".join(cultivation_parts + culinary_parts)
+        culinary_msgs: list[Message] = []
+        async for msg in query(
+            prompt=culinary_prompt,
+            options=ClaudeCodeOptions(
+                model=self.model,
+                system_prompt=VEGETABLE_RESEARCH_PROMPT,
+                allowed_tools=["WebSearch"],
+                permission_mode="bypassPermissions",
+                max_turns=3,
+            ),
+        ):
+            culinary_msgs.append(msg)
+
+        culinary_text = _extract_text(culinary_msgs)
+
+        return "\n\n".join([cultivation_text, culinary_text])
 
     async def _finalize_vegetable(
         self, name: str, entry_id: str, research_text: str
@@ -462,18 +473,9 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
     async def _deep_research_recipe(
         self, name: str, entry_id: str, basic_context: str
     ) -> str:
-        """料理の深堀り調査"""
-        options = ClaudeCodeOptions(
-            model=self.model,
-            system_prompt=RECIPE_RESEARCH_PROMPT,
-            allowed_tools=["WebSearch"],
-            permission_mode="bypassPermissions",
-            max_turns=4,
-        )
+        """料理の深堀り調査 — コンテキスト引き継ぎで query"""
 
-        async with ClaudeSDKClient(options=options) as client:
-            await client.connect(
-                prompt=f"""これまでの調査結果:
+        deep_prompt = f"""これまでの調査結果:
 {basic_context[:3000]}
 
 上記を踏まえて「{name}」について深堀りしてください:
@@ -484,14 +486,22 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
 5. 認証制度（あれば）
 
 出典URLを必ず含めてください。"""
-            )
-            parts: list[str] = []
-            async for msg in client.receive_response():
-                text = _extract_text([msg])
-                if text:
-                    parts.append(text)
 
-        return basic_context + "\n\n" + "\n".join(parts)
+        messages: list[Message] = []
+        async for msg in query(
+            prompt=deep_prompt,
+            options=ClaudeCodeOptions(
+                model=self.model,
+                system_prompt=RECIPE_RESEARCH_PROMPT,
+                allowed_tools=["WebSearch"],
+                permission_mode="bypassPermissions",
+                max_turns=3,
+            ),
+        ):
+            messages.append(msg)
+
+        deep_text = _extract_text(messages)
+        return basic_context + "\n\n" + deep_text
 
     async def _finalize_recipe(
         self, name: str, entry_id: str, research_text: str
