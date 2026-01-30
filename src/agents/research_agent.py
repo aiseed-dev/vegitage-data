@@ -535,10 +535,24 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
     def save_entry(
         data: dict,
         entry_type: Literal["vegetable", "recipe"],
+        *,
+        draft_source: str | None = None,
     ) -> Path:
-        """調査結果をJSONファイルとして保存"""
+        """調査結果をJSONファイルとして保存
+
+        Args:
+            data: エントリデータ
+            entry_type: "vegetable" or "recipe"
+            draft_source: AI名を指定すると drafts/{ai名}/ に保存。
+                          None の場合は data/ に直接保存（確定版）。
+        """
         subdir = "vegetables" if entry_type == "vegetable" else "recipes"
-        out_dir = DATA_DIR / subdir
+
+        if draft_source:
+            out_dir = PROJECT_ROOT / "drafts" / draft_source / subdir
+        else:
+            out_dir = DATA_DIR / subdir
+
         out_dir.mkdir(parents=True, exist_ok=True)
 
         entry_id = data.get("id", "UNKNOWN")
@@ -571,7 +585,7 @@ async def _run(
     else:
         result = await agent.research_recipe(name, entry_id, language)
 
-    path = agent.save_entry(result, entry_type)
+    path = agent.save_entry(result, entry_type, draft_source="claude")
     print(f"\nDone. Output: {path}")
 
 
