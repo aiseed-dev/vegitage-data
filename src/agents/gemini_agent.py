@@ -40,7 +40,7 @@ from src.agents.research_agent import (
 # 定数
 # ============================================================
 
-GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_MODEL = "gemini-3-pro-preview"
 
 # ============================================================
 # システムプロンプト

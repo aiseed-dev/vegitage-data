@@ -107,7 +107,7 @@ def _vegetable_json_template(entry_id: str) -> str:
   "origin": {{
     "country": "国名",
     "region": "地域名",
-    "history": "歴史的背景（100-200文字）"
+    "history": "歴史的背景（200-400文字）"
   }},
   "characteristics": {{
     "appearance": {{ "shape": "...", "color": "...", "size": "..." }},

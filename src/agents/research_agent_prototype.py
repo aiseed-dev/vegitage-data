@@ -110,7 +110,7 @@ VEGETABLE_RESEARCH_PROMPT = """あなたは伝統野菜の専門研究者です�
   "origin": {
     "country": "国名",
     "region": "地域名",
-    "history": "歴史的背景（100-200文字）"
+    "history": "歴史的背景（200-400文字）"
   },
   "characteristics": {
     "appearance": "外観の詳細",
