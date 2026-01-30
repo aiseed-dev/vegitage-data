@@ -2,6 +2,16 @@
 野菜エントリーのデータスキーマ定義（Pydantic v2）
 
 計画書 4.1 野菜エントリースキーマに準拠
+
+## 分類体系（3レベル + 生物学的分類）
+- 品目（item）: 料理分野の分類（トマト、ナス、ニンニク等）
+- 細品目（sub_item）: 検索用の細分類（ミニトマト、加工用トマト等）
+- 品種（variety）: 農業分類。遺伝的に固定された特徴で区別されるグループ
+  = 各 VegetableEntry が1品種に対応
+- 種（species）: 生物学的分類（学名で表現）
+
+※ 1品種が複数の品目に属することがある
+※ 1品種が複数の細品目に属することは多い
 """
 
 from __future__ import annotations
@@ -10,6 +20,26 @@ from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, Field
+
+
+# --- 分類サブモデル ---
+
+class TaxonomyClassification(BaseModel):
+    """分類情報（3レベル + 生物学的分類）"""
+    items: list[str] = Field(
+        description="品目（料理分野の分類）: トマト, ナス, ニンニク 等。複数可"
+    )
+    sub_items: list[str] = Field(
+        default_factory=list,
+        description="細品目（検索用細分類）: ミニトマト, 加工用トマト 等。複数可"
+    )
+    variety: str = Field(
+        description="品種名（農業分類）: サンマルツァーノ, パキーノ 等"
+    )
+    species: Optional[str] = Field(
+        default=None,
+        description="種の学名（生物学的分類）: Solanum lycopersicum 等"
+    )
 
 
 # --- 共通サブモデル ---
@@ -139,9 +169,16 @@ class Metadata(BaseModel):
 # --- メインモデル ---
 
 class VegetableEntry(BaseModel):
-    """野菜エントリー（計画書 4.1 準拠）"""
+    """野菜エントリー（計画書 4.1 準拠）
+
+    各エントリーは1つの「品種」に対応する。
+    品目・細品目との関係は classification フィールドで表現。
+    """
     id: str = Field(pattern=r"^[A-Z]{2}-VEG-[A-Z]{3}-\d{3}$")
     names: MultilingualName
+    classification: TaxonomyClassification = Field(
+        description="分類情報（品目・細品目・品種・種）"
+    )
     origin: Origin
     characteristics: Characteristics
     cultivation: Cultivation

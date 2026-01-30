@@ -104,6 +104,12 @@ def _vegetable_json_template(entry_id: str) -> str:
     "english": "英語名",
     "scientific": "学名"
   }},
+  "classification": {{
+    "items": ["品目1", "品目2"],
+    "sub_items": ["細品目1", "細品目2"],
+    "variety": "品種名",
+    "species": "学名（種レベル）"
+  }},
   "origin": {{
     "country": "国名",
     "region": "地域名",
