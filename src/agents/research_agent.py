@@ -300,11 +300,19 @@ class ResearchAgent:
         # Phase 1: 基本情報収集 (Stateless)
         print("[1/4] 基本情報収集...")
         basic_info = await self._query_basic_info(name, entry_id, language)
+        print(f"  → {len(basic_info)} 文字取得")
 
-        # Phase 2-3: 栽培 + 料理・文化の深堀り (Stateful)
+        # Phase 2-3: 栽培 + 料理・文化の深堀り
         print("[2/4] 栽培情報の深堀り...")
         print("[3/4] 料理・文化情報の調査...")
         detailed_info = await self._deep_research_vegetable(name, entry_id, basic_info)
+        print(f"  → {len(detailed_info)} 文字取得")
+
+        # raw text を保存（デバッグ・再構造化用）
+        self._save_raw_text(entry_id, "vegetable", {
+            "basic_info": basic_info,
+            "detailed_info": detailed_info,
+        })
 
         # Phase 4: 構造化・検証
         print("[4/4] データ構造化・検証...")
@@ -438,19 +446,31 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
             options=ClaudeCodeOptions(
                 model=self.model,
                 system_prompt="あなたはデータ構造化の専門家です。調査結果を正確にJSON形式に変換してください。JSON以外のテキストは一切出力しないでください。",
-                allowed_tools=[],
                 permission_mode="bypassPermissions",
-                max_turns=2,
+                max_turns=3,
             ),
         ):
             messages.append(msg)
+
+        # デバッグ: メッセージ型を表示
+        print(f"  構造化レスポンス: {len(messages)} メッセージ")
+        for i, msg in enumerate(messages):
+            print(f"    [{i}] {type(msg).__name__}", end="")
+            if isinstance(msg, ResultMessage):
+                print(f" (result={len(msg.result or '')} chars, is_error={msg.is_error})")
+            elif isinstance(msg, AssistantMessage):
+                print(f" (blocks={len(msg.content)})")
+            else:
+                print()
 
         text = _extract_text(messages)
         result = _extract_json(text)
 
         if result is None:
             print("  WARNING: JSON抽出失敗。テキストを保存します。")
-            print(f"  先頭200文字: {text[:200]}")
+            print(f"  抽出テキスト長: {len(text)} 文字")
+            if text:
+                print(f"  先頭200文字: {text[:200]}")
             return {"_raw_text": text, "id": entry_id}
 
         return result
@@ -473,9 +493,17 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
 
         print("[1/3] 基本情報・材料・調理法の収集...")
         basic_info = await self._query_recipe_basic(name, entry_id, language)
+        print(f"  → {len(basic_info)} 文字取得")
 
         print("[2/3] 文化的背景・バリエーションの深堀り...")
         detailed_info = await self._deep_research_recipe(name, entry_id, basic_info)
+        print(f"  → {len(detailed_info)} 文字取得")
+
+        # raw text を保存（デバッグ・再構造化用）
+        self._save_raw_text(entry_id, "recipe", {
+            "basic_info": basic_info,
+            "detailed_info": detailed_info,
+        })
 
         print("[3/3] データ構造化・検証...")
         final = await self._finalize_recipe(name, entry_id, detailed_info)
@@ -572,19 +600,31 @@ JSONのみを出力してください。説明文やマークダウンは不要�
             options=ClaudeCodeOptions(
                 model=self.model,
                 system_prompt="あなたはデータ構造化の専門家です。調査結果を正確にJSON形式に変換してください。JSON以外のテキストは一切出力しないでください。",
-                allowed_tools=[],
                 permission_mode="bypassPermissions",
-                max_turns=2,
+                max_turns=3,
             ),
         ):
             messages.append(msg)
+
+        # デバッグ: メッセージ型を表示
+        print(f"  構造化レスポンス: {len(messages)} メッセージ")
+        for i, msg in enumerate(messages):
+            print(f"    [{i}] {type(msg).__name__}", end="")
+            if isinstance(msg, ResultMessage):
+                print(f" (result={len(msg.result or '')} chars, is_error={msg.is_error})")
+            elif isinstance(msg, AssistantMessage):
+                print(f" (blocks={len(msg.content)})")
+            else:
+                print()
 
         text = _extract_text(messages)
         result = _extract_json(text)
 
         if result is None:
             print("  WARNING: JSON抽出失敗。テキストを保存します。")
-            print(f"  先頭200文字: {text[:200]}")
+            print(f"  抽出テキスト長: {len(text)} 文字")
+            if text:
+                print(f"  先頭200文字: {text[:200]}")
             return {"_raw_text": text, "id": entry_id}
 
         return result
@@ -592,6 +632,27 @@ JSONのみを出力してください。説明文やマークダウンは不要�
     # ----------------------------------------------------------
     # データ保存
     # ----------------------------------------------------------
+
+    @staticmethod
+    def _save_raw_text(
+        entry_id: str,
+        entry_type: str,
+        phases: dict[str, str],
+    ) -> Path:
+        """各フェーズのraw textをデバッグ用に保存"""
+        raw_dir = PROJECT_ROOT / "drafts" / "claude" / "raw"
+        raw_dir.mkdir(parents=True, exist_ok=True)
+
+        out_path = raw_dir / f"{entry_id}_{entry_type}_raw.json"
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(
+                {"id": entry_id, "type": entry_type, "phases": phases},
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
+        print(f"  Raw text saved: {out_path.relative_to(PROJECT_ROOT)}")
+        return out_path
 
     @staticmethod
     def save_entry(
