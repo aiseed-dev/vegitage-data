@@ -212,8 +212,9 @@ def _extract_text(messages: list[Message]) -> str:
 
 def _extract_json(text: str) -> dict | None:
     """テキストからJSONブロックを抽出してパース"""
-    # ```json ... ``` ブロックを探す
     import re
+
+    # 1. ```json ... ``` ブロックを探す
     pattern = re.compile(r"```json\s*\n?(.*?)\n?\s*```", re.DOTALL)
     match = pattern.search(text)
     if match:
@@ -222,14 +223,46 @@ def _extract_json(text: str) -> dict | None:
         except json.JSONDecodeError:
             pass
 
-    # ブロックなしの場合、最初の { ... } を探す
+    # 2. ``` ... ``` ブロック（json指定なし）
+    pattern2 = re.compile(r"```\s*\n?(.*?)\n?\s*```", re.DOTALL)
+    for m in pattern2.finditer(text):
+        candidate = m.group(1).strip()
+        if candidate.startswith("{"):
+            try:
+                return json.loads(candidate)
+            except json.JSONDecodeError:
+                continue
+
+    # 3. ブレース対応で最外のJSONオブジェクトを探す
     brace_start = text.find("{")
-    brace_end = text.rfind("}")
-    if brace_start != -1 and brace_end != -1:
-        try:
-            return json.loads(text[brace_start : brace_end + 1])
-        except json.JSONDecodeError:
-            pass
+    if brace_start == -1:
+        return None
+
+    depth = 0
+    in_string = False
+    escape_next = False
+    for i in range(brace_start, len(text)):
+        c = text[i]
+        if escape_next:
+            escape_next = False
+            continue
+        if c == "\\":
+            escape_next = True
+            continue
+        if c == '"' and not escape_next:
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                try:
+                    return json.loads(text[brace_start : i + 1])
+                except json.JSONDecodeError:
+                    return None
 
     return None
 
@@ -388,6 +421,7 @@ class ResearchAgent:
 
         prompt = f"""以下は「{name}」に関する調査結果です。
 この情報を整理して、指定のJSON形式で出力してください。
+JSONのみを出力してください。説明文やマークダウンは不要です。
 
 不足している情報は「要確認」と記載し、needs_review に追加してください。
 confidence_score は情報の充実度に応じて 0.0-1.0 で設定してください。
@@ -403,10 +437,10 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
             prompt=prompt,
             options=ClaudeCodeOptions(
                 model=self.model,
-                system_prompt="あなたはデータ構造化の専門家です。調査結果を正確にJSON形式に変換してください。",
+                system_prompt="あなたはデータ構造化の専門家です。調査結果を正確にJSON形式に変換してください。JSON以外のテキストは一切出力しないでください。",
                 allowed_tools=[],
                 permission_mode="bypassPermissions",
-                max_turns=1,
+                max_turns=2,
             ),
         ):
             messages.append(msg)
@@ -416,6 +450,7 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
 
         if result is None:
             print("  WARNING: JSON抽出失敗。テキストを保存します。")
+            print(f"  先頭200文字: {text[:200]}")
             return {"_raw_text": text, "id": entry_id}
 
         return result
@@ -523,6 +558,7 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
 
         prompt = f"""以下は「{name}」に関する調査結果です。
 この情報を整理して、指定のJSON形式で出力してください。
+JSONのみを出力してください。説明文やマークダウンは不要です。
 
 {template}
 
@@ -535,10 +571,10 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
             prompt=prompt,
             options=ClaudeCodeOptions(
                 model=self.model,
-                system_prompt="あなたはデータ構造化の専門家です。調査結果を正確にJSON形式に変換してください。",
+                system_prompt="あなたはデータ構造化の専門家です。調査結果を正確にJSON形式に変換してください。JSON以外のテキストは一切出力しないでください。",
                 allowed_tools=[],
                 permission_mode="bypassPermissions",
-                max_turns=1,
+                max_turns=2,
             ),
         ):
             messages.append(msg)
@@ -548,6 +584,7 @@ confidence_score は情報の充実度に応じて 0.0-1.0 で設定してくだ
 
         if result is None:
             print("  WARNING: JSON抽出失敗。テキストを保存します。")
+            print(f"  先頭200文字: {text[:200]}")
             return {"_raw_text": text, "id": entry_id}
 
         return result
