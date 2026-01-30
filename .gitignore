@@ -95,3 +95,6 @@ cython_debug/
 # Project specific
 *.log
 *.local
+
+# AI research drafts (intermediate outputs before promotion to data/)
+drafts/
