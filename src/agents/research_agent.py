@@ -55,10 +55,12 @@ VEGETABLE_RESEARCH_PROMPT = """あなたは伝統野菜の専門研究者です�
 ## 情報源の優先順位
 - イタリア野菜の場合: EU公式情報源（EUR-Lex, EC農業DB等）、イタリア政府・自治体サイト、
   イタリア語の専門サイト（.it ドメイン）を最優先で調査すること
-- 日本野菜の場合: NARO在来品種DB（gene.affrc.go.jp）、各地域ブランド認定団体
-  （京野菜=京のふるさと産品協会、加賀野菜=金沢市農産物ブランド協会、
-  江戸東京野菜=JA東京中央会、信州伝統野菜=dentou-yasai.jp 等）、
+- 日本野菜の場合: 各地域ブランド認定団体
+  （京野菜=kyoyasai.kyoto、加賀野菜=kanazawa-kagayasai.com、
+  江戸東京野菜=JA東京中央会 tokyo-ja.or.jp/farm/edo/、
+  信州伝統野菜=dentou-yasai.jp、なにわ伝統野菜=大阪府 等）、
   日本伝統野菜推進協会（tradveggie.or.jp）、大学農学部の研究を最優先
+  ※ 農林水産省・NARO Genebankは情報が不十分または停止中のため使用しない
 - 英語圏の情報は補足として使用
 
 ## 重要なルール
