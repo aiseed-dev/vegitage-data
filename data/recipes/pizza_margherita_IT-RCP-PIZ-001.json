@@ -96,15 +96,23 @@
   "cultural_context": {
     "eating_style": "ナポリでは2つ折りや4つ折りにして立ち食いすることも多い。生地が柔らかく折りたためることが重要",
     "certification": {
-      "organization": "真のナポリピッツァ協会（Associazione Verace Pizza Napoletana）",
-      "established": "1984年、ナポリ",
-      "purpose": "古くから伝わるピッツァ職人の伝統技術を守り、世代交代による変化を防ぐ",
-      "requirements": [
-        "生地は小麦粉、水、酵母、塩の4つのみ（オイル混入厳禁）",
-        "トマトはサンマルツァーノ種の缶詰を使用",
-        "手で伸ばす（麺棒禁止）",
-        "薪窯で400℃以上、60-90秒で焼成"
-      ]
+      "avpn": {
+        "organization": "真のナポリピッツァ協会（Associazione Verace Pizza Napoletana）",
+        "established": "1984年、ナポリ",
+        "purpose": "古くから伝わるピッツァ職人の伝統技術を守り、世代交代による変化を防ぐ",
+        "requirements": [
+          "生地は小麦粉、水、酵母、塩の4つのみ（オイル混入厳禁）",
+          "トマトはサンマルツァーノ種の缶詰を使用",
+          "手で伸ばす（麺棒禁止）",
+          "薪窯で400℃以上、60-90秒で焼成"
+        ]
+      },
+      "eu_stg": {
+        "type": "STG（Specialità Tradizionale Garantita / 伝統的特産品保証）",
+        "regulation": "EU Regulation 2022/2313",
+        "description": "EUが「Pizza Napoletana」の名称と製法を地理的認証で保護。STGの表記なしに「Pizza Napoletana」の名称を使用することはできない。パッケージやレストラン・ピッツェリアのメニューに「Pizza Napoletana STG」と記載するには、指定された材料と製法を遵守する必要がある。",
+        "scope": "EU域内での名称保護と製法基準の義務化"
+      }
     },
     "symbolism": "トマトの赤、モッツァレラの白、バジルの緑はイタリア国旗を表現。庶民も王室も関わりなく愛される国民食",
     "unesco": "2017年、ナポリのピッツァイオーロ（ピッツァ職人）の技術がユネスコ無形文化遺産に登録"
