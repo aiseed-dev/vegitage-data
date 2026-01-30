@@ -121,7 +121,7 @@ vegitage-data/
 
 このプロジェクトは [AIseed](https://github.com/aiseed) プラットフォームの知識基盤として開発されています。
 
-- **Grow**: 栽培カレンダー、観察ガイドに野菜データを活用
+- **Grow**: 栽培記録アプリ、観察ガイドに野菜データを活用
 - **Learn**: 伝統野菜・料理に関する学習コンテンツを自動生成
 - **BYOA**: ユーザー自身のClaude Pro/Geminiでカスタム調査可能
 
@@ -159,7 +159,7 @@ vegitage-data/
 
 ## 作者
 
-Yasuhiro ([@yasuhiro](https://github.com/yasuhiro))
+Yasuhiro Niji ([@awoni](https://github.com/awoni))
 
 ---
 
