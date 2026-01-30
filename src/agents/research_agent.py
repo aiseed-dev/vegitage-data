@@ -189,10 +189,13 @@ def _extract_text(messages: list[Message]) -> str:
     """メッセージリストからテキストを抽出"""
     parts: list[str] = []
     for msg in messages:
-        if isinstance(msg, (AssistantMessage, ResultMessage)):
+        if isinstance(msg, AssistantMessage):
             for block in msg.content:
                 if isinstance(block, TextBlock):
                     parts.append(block.text)
+        elif isinstance(msg, ResultMessage):
+            if msg.result:
+                parts.append(msg.result)
     return "\n".join(parts)
 
 
