@@ -92,3 +92,28 @@ IT-VEG-CIM-003,Broccoletto di Anguillara,アングイッラーラのブロッコ
 IT-VEG-ROT-002,Rapa di Caprauna,カプラウナのカブ,Turnip of Caprauna,カブ,,Piemonte,Presidio,pending
 IT-VEG-ROT-003,Rapa di Milano colletto viola,ミラノの紫首カブ,Milan Purple Collar Turnip,カブ,,Lombardia,Traditional,pending
 IT-VEG-ROT-004,Rapa catalogna di Roccasecca,ロッカセッカのカタローニャカブ,Roccasecca Catalogna Turnip,カブ,,Lazio,PAT,pending
+IT-VEG-ASP-007,Asparago Violetto di Albenga,アルベンガの紫アスパラガス,Violet Asparagus of Albenga,アスパラガス,紫アスパラガス,Liguria,Presidio,pending
+IT-VEG-ASP-008,Asparago Rosa di Mezzago,メッツァーゴのピンクアスパラガス,Pink Asparagus of Mezzago,アスパラガス,ピンクアスパラガス,Lombardia,De.Co.,pending
+IT-VEG-ASP-009,Asparago di Santena,サンテーナのアスパラガス,Asparagus of Santena,アスパラガス,,Piemonte,PAT,pending
+IT-VEG-ASP-010,Asparago di Montine,モンティーネのアスパラガス,Asparagus of Montine,アスパラガス,,Veneto,De.Co./PAT,pending
+IT-VEG-CHI-005,Cicoria di Galatina,ガラティーナのチコリー,Chicory of Galatina,チコリー|ラディッキオ,チコリー・ヴェルデ,Puglia,PAT,pending
+IT-VEG-CHI-006,Cicoria Molfettese,モルフェッタのチコリー,Molfetta Chicory,チコリー|ラディッキオ,チコリー・ヴェルデ,Puglia,PAT,pending
+IT-VEG-CHI-007,Catalogna di Gaeta,ガエータのカタローニャ,Catalogna of Gaeta,チコリー|ラディッキオ,カタローニャ,Lazio,PAT,pending
+IT-VEG-CHI-008,Cicoria Bianca di Milano,ミラノの白チコリー,White Chicory of Milan,チコリー|ラディッキオ,白チコリー,Lombardia,Traditional,pending
+IT-VEG-CHI-009,Cicoria Pan di Zucchero Casalese,カザーレのパン・ディ・ズッケロ,Pan di Zucchero Chicory of Casale,チコリー|ラディッキオ,パン・ディ・ズッケロ,Piemonte,PAT,pending
+IT-VEG-CHI-010,Cicoria Zuccherina di Trieste,トリエステのズッケリーナ,Sugar Chicory of Trieste,チコリー|ラディッキオ,ズッケリーナ,Friuli Venezia Giulia,Traditional,pending
+IT-VEG-GAR-004,Aglio Rosso di Sulmona,スルモーナの赤ニンニク,Red Garlic of Sulmona,ニンニク,赤ニンニク,Abruzzo,PAT/Presidio,pending
+IT-VEG-GAR-005,Aglio di Vessalico,ヴェッサリコのニンニク,Garlic of Vessalico,ニンニク,,Liguria,PAT/Presidio,pending
+IT-VEG-GAR-006,Aglio di Resia (Strok),レージアのニンニク（ストロク）,Garlic of Resia (Strok),ニンニク,,Friuli Venezia Giulia,PAT/Presidio,pending
+IT-VEG-GAR-007,Aglio Rosso di Nubia,ヌビアの赤ニンニク,Red Garlic of Nubia,ニンニク,赤ニンニク,Sicilia,PAT/Presidio,pending
+IT-VEG-ONI-005,Cipolla di Giarratana,ジャッラターナのタマネギ,Onion of Giarratana,タマネギ,,Sicilia,Presidio,pending
+IT-VEG-ONI-006,Cipolla Ramata di Montoro,モントーロの銅色タマネギ,Copper Onion of Montoro,タマネギ,ラマータ,Campania,Presidio,pending
+IT-VEG-ONI-007,Cipolla di Alife,アリーフェのタマネギ,Onion of Alife,タマネギ,,Campania,Presidio,pending
+IT-VEG-ONI-008,Cipolla Rossa di Acquaviva delle Fonti,アクアヴィーヴァの赤タマネギ,Red Onion of Acquaviva delle Fonti,タマネギ,赤タマネギ,Puglia,Presidio,pending
+IT-VEG-ONI-009,Cipolla di Cannara,カンナーラのタマネギ,Onion of Cannara,タマネギ,,Umbria,PAT,pending
+IT-VEG-ONI-010,Cipolla Borettana,ボレッターナのタマネギ,Borettana Onion,タマネギ,ボレッターナ,Emilia-Romagna,De.Co.,pending
+IT-VEG-ONI-011,Cipolla di Certaldo,チェルタルドのタマネギ,Onion of Certaldo,タマネギ,,Toscana,Presidio,pending
+IT-VEG-ONI-012,Cipolla di Fara Filiorum Petri,ファーラ・フィリオルム・ペトリのタマネギ,Onion of Fara Filiorum Petri,タマネギ,,Abruzzo,Presidio,pending
+IT-VEG-ONI-013,Cipolla di Banari,バナーリのタマネギ,Onion of Banari,タマネギ,,Sardegna,PAT,pending
+IT-VEG-ONI-014,Cipolla Rossa di Cavasso Nuovo,カヴァッソ・ヌオーヴォの赤タマネギ,Red Onion of Cavasso Nuovo,タマネギ,赤タマネギ,Friuli Venezia Giulia,Presidio,pending
+IT-VEG-ONI-015,Cipolla di Zapponeta,ザッポネータのタマネギ,Onion of Zapponeta,タマネギ,,Puglia,PAT,pending
