@@ -52,12 +52,63 @@ class MultilingualName(BaseModel):
     scientific: str = Field(default="", description="学名")
 
 
+class HistoricalReference(BaseModel):
+    """歴史文献の参照"""
+    author: str = Field(description="著者名（例: 大プリニウス、マッティオーリ）")
+    work: Optional[str] = Field(default=None, description="著作名")
+    year: Optional[str] = Field(default=None, description="年代")
+    description: str = Field(description="記述内容の要約")
+
+
+class History(BaseModel):
+    """品種の歴史・文化情報（Deep Research PDFから抽出）
+
+    Deep Research PDFには古代ローマから現代に至る豊富な歴史情報が
+    含まれる。このモデルでその情報を構造的に保持する。
+    """
+    summary: str = Field(
+        description="歴史的背景の要約（200-400文字）"
+    )
+    etymology: Optional[str] = Field(
+        default=None,
+        description="名称の語源・由来（ラテン語、方言、王朝名等）"
+    )
+    ancient_period: Optional[str] = Field(
+        default=None,
+        description="古代（ローマ・ギリシャ）における記録・利用"
+    )
+    medieval_renaissance: Optional[str] = Field(
+        default=None,
+        description="中世〜ルネサンス期の変遷（修道院農業、本草学等）"
+    )
+    modern_history: Optional[str] = Field(
+        default=None,
+        description="近現代の展開（品種固定、産地形成、認証取得等）"
+    )
+    key_references: list[HistoricalReference] = Field(
+        default_factory=list,
+        description="重要な歴史的文献・人物の参照"
+    )
+    traditional_preservation: Optional[str] = Field(
+        default=None,
+        description="伝統的な保存・加工方法"
+    )
+    regional_food_culture: Optional[str] = Field(
+        default=None,
+        description="地域の食文化との結びつき（郷土料理、祭事等）"
+    )
+    certification_history: Optional[str] = Field(
+        default=None,
+        description="DOP/IGP/PAT/Presidio認証の経緯"
+    )
+
+
 class Origin(BaseModel):
     """原産地情報"""
     country: str
     region: str
     specific_town: Optional[str] = None
-    history: str = Field(description="歴史的背景（100-200文字目安）")
+    history: str | History = Field(description="歴史的背景。文字列またはHistoryオブジェクト")
     predecessor: Optional[str] = None
 
 
