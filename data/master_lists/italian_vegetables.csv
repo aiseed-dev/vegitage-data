@@ -92,3 +92,82 @@ IT-VEG-CIM-003,Broccoletto di Anguillara,アングイッラーラのブロッコ
 IT-VEG-ROT-002,Rapa di Caprauna,カプラウナのカブ,Turnip of Caprauna,カブ,,Piemonte,Presidio,pending
 IT-VEG-ROT-003,Rapa di Milano colletto viola,ミラノの紫首カブ,Milan Purple Collar Turnip,カブ,,Lombardia,Traditional,pending
 IT-VEG-ROT-004,Rapa catalogna di Roccasecca,ロッカセッカのカタローニャカブ,Roccasecca Catalogna Turnip,カブ,,Lazio,PAT,pending
+IT-VEG-ASP-007,Asparago Violetto di Albenga,アルベンガの紫アスパラガス,Violet Asparagus of Albenga,アスパラガス,紫アスパラガス,Liguria,Presidio,pending
+IT-VEG-ASP-008,Asparago Rosa di Mezzago,メッツァーゴのピンクアスパラガス,Pink Asparagus of Mezzago,アスパラガス,ピンクアスパラガス,Lombardia,De.Co.,pending
+IT-VEG-ASP-009,Asparago di Santena,サンテーナのアスパラガス,Asparagus of Santena,アスパラガス,,Piemonte,PAT,pending
+IT-VEG-ASP-010,Asparago di Montine,モンティーネのアスパラガス,Asparagus of Montine,アスパラガス,,Veneto,De.Co./PAT,pending
+IT-VEG-CHI-005,Cicoria di Galatina,ガラティーナのチコリー,Chicory of Galatina,チコリー|ラディッキオ,チコリー・ヴェルデ,Puglia,PAT,pending
+IT-VEG-CHI-006,Cicoria Molfettese,モルフェッタのチコリー,Molfetta Chicory,チコリー|ラディッキオ,チコリー・ヴェルデ,Puglia,PAT,pending
+IT-VEG-CHI-007,Catalogna di Gaeta,ガエータのカタローニャ,Catalogna of Gaeta,チコリー|ラディッキオ,カタローニャ,Lazio,PAT,pending
+IT-VEG-CHI-008,Cicoria Bianca di Milano,ミラノの白チコリー,White Chicory of Milan,チコリー|ラディッキオ,白チコリー,Lombardia,Traditional,pending
+IT-VEG-CHI-009,Cicoria Pan di Zucchero Casalese,カザーレのパン・ディ・ズッケロ,Pan di Zucchero Chicory of Casale,チコリー|ラディッキオ,パン・ディ・ズッケロ,Piemonte,PAT,pending
+IT-VEG-CHI-010,Cicoria Zuccherina di Trieste,トリエステのズッケリーナ,Sugar Chicory of Trieste,チコリー|ラディッキオ,ズッケリーナ,Friuli Venezia Giulia,Traditional,pending
+IT-VEG-GAR-004,Aglio Rosso di Sulmona,スルモーナの赤ニンニク,Red Garlic of Sulmona,ニンニク,赤ニンニク,Abruzzo,PAT/Presidio,pending
+IT-VEG-GAR-005,Aglio di Vessalico,ヴェッサリコのニンニク,Garlic of Vessalico,ニンニク,,Liguria,PAT/Presidio,pending
+IT-VEG-GAR-006,Aglio di Resia (Strok),レージアのニンニク（ストロク）,Garlic of Resia (Strok),ニンニク,,Friuli Venezia Giulia,PAT/Presidio,pending
+IT-VEG-GAR-007,Aglio Rosso di Nubia,ヌビアの赤ニンニク,Red Garlic of Nubia,ニンニク,赤ニンニク,Sicilia,PAT/Presidio,pending
+IT-VEG-ONI-005,Cipolla di Giarratana,ジャッラターナのタマネギ,Onion of Giarratana,タマネギ,,Sicilia,Presidio,pending
+IT-VEG-ONI-006,Cipolla Ramata di Montoro,モントーロの銅色タマネギ,Copper Onion of Montoro,タマネギ,ラマータ,Campania,Presidio,pending
+IT-VEG-ONI-007,Cipolla di Alife,アリーフェのタマネギ,Onion of Alife,タマネギ,,Campania,Presidio,pending
+IT-VEG-ONI-008,Cipolla Rossa di Acquaviva delle Fonti,アクアヴィーヴァの赤タマネギ,Red Onion of Acquaviva delle Fonti,タマネギ,赤タマネギ,Puglia,Presidio,pending
+IT-VEG-ONI-009,Cipolla di Cannara,カンナーラのタマネギ,Onion of Cannara,タマネギ,,Umbria,PAT,pending
+IT-VEG-ONI-010,Cipolla Borettana,ボレッターナのタマネギ,Borettana Onion,タマネギ,ボレッターナ,Emilia-Romagna,De.Co.,pending
+IT-VEG-ONI-011,Cipolla di Certaldo,チェルタルドのタマネギ,Onion of Certaldo,タマネギ,,Toscana,Presidio,pending
+IT-VEG-ONI-012,Cipolla di Fara Filiorum Petri,ファーラ・フィリオルム・ペトリのタマネギ,Onion of Fara Filiorum Petri,タマネギ,,Abruzzo,Presidio,pending
+IT-VEG-ONI-013,Cipolla di Banari,バナーリのタマネギ,Onion of Banari,タマネギ,,Sardegna,PAT,pending
+IT-VEG-ONI-014,Cipolla Rossa di Cavasso Nuovo,カヴァッソ・ヌオーヴォの赤タマネギ,Red Onion of Cavasso Nuovo,タマネギ,赤タマネギ,Friuli Venezia Giulia,Presidio,pending
+IT-VEG-ONI-015,Cipolla di Zapponeta,ザッポネータのタマネギ,Onion of Zapponeta,タマネギ,,Puglia,PAT,pending
+IT-VEG-CHP-001,Cece Rosso di Orco Feglino,オルコ・フェリーノの赤ヒヨコマメ,Red Chickpea of Orco Feglino,ヒヨコマメ,赤ヒヨコマメ,Liguria,Presidio,pending
+IT-VEG-CHP-002,Cece Piccino del Chianti,キアンティの小粒ヒヨコマメ,Small Chickpea of Chianti,ヒヨコマメ,小粒,Toscana,PAT,pending
+IT-VEG-CHP-003,Cece Rosa di Reggello,レッジェッロのピンクヒヨコマメ,Pink Chickpea of Reggello,ヒヨコマメ,ピンク,Toscana,PAT,pending
+IT-VEG-CHP-004,Cece Rugoso Maremmano,マレンマのしわヒヨコマメ,Wrinkled Chickpea of Maremma,ヒヨコマメ,ルゴーゾ,Toscana,PAT,pending
+IT-VEG-CHP-005,Cece di Colfiorito,コルフィオリトのヒヨコマメ,Chickpea of Colfiorito,ヒヨコマメ,,Umbria,PAT,pending
+IT-VEG-CHP-006,Cece di Spello,スペッロのヒヨコマメ,Chickpea of Spello,ヒヨコマメ,,Umbria,PAT,pending
+IT-VEG-CHP-007,Cece del Solco Dritto,ソルコ・ドリットのヒヨコマメ,Chickpea of Solco Dritto,ヒヨコマメ,,Lazio,PAT,pending
+IT-VEG-CHP-008,Cece di Cicerale,チチェラーレのヒヨコマメ,Chickpea of Cicerale,ヒヨコマメ,,Campania,Presidio,pending
+IT-VEG-CHP-009,Cece di Teano,テアーノのヒヨコマメ,Chickpea of Teano,ヒヨコマメ,,Campania,Presidio,pending
+IT-VEG-CHP-010,Cece Nero della Murgia Carsica,ムルジャの黒ヒヨコマメ,Black Chickpea of Murgia Carsica,ヒヨコマメ,黒ヒヨコマメ,Puglia,Presidio,pending
+IT-VEG-CHP-011,Cece Rosso di Cianciana,チャンチャーナの赤ヒヨコマメ,Red Chickpea of Cianciana,ヒヨコマメ,赤ヒヨコマメ,Sicilia,PAT,pending
+IT-VEG-PEA-001,Biso di Borso,ボルソ・デル・グラッパのビーゾ,Biso of Borso del Grappa,エンドウマメ,,Veneto,De.Co.,pending
+IT-VEG-PEA-002,Verdone Nano di Cognola ai Colli,コニョーラ・アイ・コッリのヴェルドーネ・ナーノ,Verdone Nano of Cognola ai Colli,エンドウマメ,矮性種,Veneto,De.Co.,pending
+IT-VEG-PEA-003,Pisello di Lavagna,ラヴァーニャのエンドウ,Pea of Lavagna,エンドウマメ,,Liguria,PAT,pending
+IT-VEG-PEA-004,Pisello Centogiorni,チェントジョルニ（百日エンドウ）,Centogiorni Pea,エンドウマメ,百日種,Campania,Presidio,pending
+IT-VEG-PEA-005,Pisello Nano di Zollino,ゾッリーノの矮性エンドウ,Dwarf Pea of Zollino,エンドウマメ,矮性種,Puglia,PAT,pending
+IT-VEG-PEA-006,Pisello Secco di Vitigliano,ヴィティリアーノの乾燥エンドウ,Dried Pea of Vitigliano,エンドウマメ,乾燥用,Puglia,PAT,pending
+IT-VEG-PEA-007,Roveja,ロヴェジャ,Roveja,エンドウマメ,野生種近縁,Umbria,Presidio,pending
+IT-VEG-PEA-008,Pisello Riccio di Sannicola,サンニコラの縮れエンドウ,Curly Pea of Sannicola,エンドウマメ,縮れ種,Puglia,PAT,pending
+IT-VEG-PEA-009,Pisello di Casalborgone,カザルボルゴーネのエンドウ,Pea of Casalborgone,エンドウマメ,,Piemonte,PAT,pending
+IT-VEG-FVB-001,Fava Larga di Leonforte,レオンフォルテの大粒ソラマメ,Broad Bean of Leonforte,ソラマメ,大粒種,Sicilia,IGP,pending
+IT-VEG-FVB-002,Fava Cottoia di Modica,モディカのコットーイア・ソラマメ,Cottoia Fava Bean of Modica,ソラマメ,コットーイア,Sicilia,PAT,pending
+IT-VEG-FVB-003,Fava di Carpino,カルピーノのソラマメ,Fava Bean of Carpino,ソラマメ,,Puglia,Presidio,pending
+IT-VEG-FVB-004,Fava di Zollino,ゾッリーノのソラマメ,Fava Bean of Zollino,ソラマメ,,Puglia,PAT,pending
+IT-VEG-FVB-005,Fava di Fratte Rosa,フラッテ・ローザのソラマメ,Fava Bean of Fratte Rosa,ソラマメ,,Marche,PAT,pending
+IT-VEG-FVB-006,Fava di Sauris,サウリスのソラマメ,Fava Bean of Sauris,ソラマメ,,Friuli Venezia Giulia,PAT,pending
+IT-VEG-CRT-003,Carota di Polignano,ポリニャーノの多色人参,Polignano Carrot,ニンジン,多色,Puglia,Presidio,pending
+IT-VEG-CRT-004,Pestanaca di Sant'Ippazio,聖ヒュパティオスのペスタナカ,Pestanaca of Sant'Ippazio,ニンジン,紫,Puglia,PAT,pending
+IT-VEG-CRT-005,Carota di San Rocco Castagnaretta,サン・ロッコ・カスタニャレッタの人参,Carrot of San Rocco Castagnaretta,ニンジン,,Piemonte,PAT,pending
+IT-VEG-CRT-006,Carota Gialla di Chieri,キエーリの黄色人参,Yellow Carrot of Chieri,ニンジン,黄色,Piemonte,PAT,pending
+IT-VEG-HRB-002,Basilico Napoletano,ナポリ・バジル,Neapolitan Basil,バジル|ハーブ,レタス葉型,Campania,PAT,pending
+IT-VEG-BEN-007,Fagiolo Zolfino,ゾルフィーノ豆,Zolfino Bean,インゲン豆,ゾルフィーノ,Toscana,PAT,pending
+IT-VEG-GBN-001,Meraviglia di Venezia,メラヴィリア・ディ・ヴェネツィア,Marvel of Venice,ファジョーリニ,黄色平サヤ,Veneto,PAT,pending
+IT-VEG-GBN-002,Stortino di Lucca,ストルティーノ・ディ・ルッカ,Stortino of Lucca,ファジョーリニ,湾曲黄色,Toscana,PAT,pending
+IT-VEG-GBN-003,Anellino di Trento,アネッリーノ・ディ・トレント,Anellino of Trento,ファジョーリニ,紫縞,Trentino-Alto Adige,PAT,pending
+IT-VEG-GBN-004,Fagiolino di Sant'Anna,ファジョリーノ・ディ・サンタンナ,Sant'Anna Green Bean,ファジョーリニ,極長サヤ,Toscana,PAT,pending
+IT-VEG-GBN-005,Fagiolo a Pisello,ファジョーロ・ア・ピゼッロ,Pea-shaped Bean,ファジョーリニ,丸サヤ,Campania,PAT,pending
+IT-VEG-GBN-006,Trionfo Violetto,トリオンフォ・ヴィオレット,Purple Triumph,ファジョーリニ,紫色,Veneto,Traditional,pending
+IT-VEG-GBN-007,Fagiolina del Trasimeno,ファジョリーナ・デル・トラジメーノ,Fagiolina of Trasimeno,ファジョーリニ,古代種(Vigna),Umbria,Presidio,pending
+IT-VEG-FEN-002,Finocchio di Sarno,サルノのフェンネル,Fennel of Sarno,フェンネル,野菜用(grumolo),Campania,PAT,pending
+IT-VEG-FEN-003,Finocchio di Tarquinia,タルクイニアのフェンネル,Fennel of Tarquinia,フェンネル,在来種,Lazio,Presidio,pending
+IT-VEG-LEK-001,Porro di Cervere,チェルヴェーレのポロ,Leek of Cervere,ポロ（リーキ）,軟白栽培,Piemonte,PAT/Presidio,pending
+IT-VEG-LEK-002,Porro Lungo Dolce di Carmagnola,カルマニョーラの長甘ポロ,Long Sweet Leek of Carmagnola,ポロ（リーキ）,大型種(150cm),Piemonte,PAT,pending
+IT-VEG-LEK-003,Porro di Massignano,マッシニャーノのポロ,Leek of Massignano,ポロ（リーキ）,在来種,Marche,Traditional,pending
+IT-VEG-LEK-004,Porro di Nosellari,ノゼッラリのポロ,Leek of Nosellari,ポロ（リーキ）,山岳在来種,Trentino-Alto Adige,Presidio,pending
+IT-VEG-CLF-002,Cavolfiore Violetto di Sicilia,シチリアの紫カリフラワー,Violet Cauliflower of Sicily,カリフラワー,紫(ヴィオレット),Sicilia,PAT,pending
+IT-VEG-CLF-003,Cima di Cola,チーマ・ディ・コーラ,Cima di Cola Cauliflower,カリフラワー,緑(古形態),Puglia,PAT,pending
+IT-VEG-CLF-004,Cavolfiore di Moncalieri,モンカリエーリのカリフラワー,Cauliflower of Moncalieri,カリフラワー,クリーム色,Piemonte,Presidio,pending
+IT-VEG-CLF-005,Cavolfiore Fiorentino Tardivo,フィレンツェの晩生カリフラワー,Late Florentine Cauliflower,カリフラワー,晩生種,Toscana,PAT,pending
+IT-VEG-ZUC-008,Zucchina Tonda Fiorentina,丸型フィレンツェズッキーニ,Round Florentine Zucchini,ズッキーニ,丸型,Toscana,PAT,pending
+IT-VEG-ZUC-009,Zucchina Mora Pisana,ピサの黒ズッキーニ,Pisan Dark Zucchini,ズッキーニ,黒(モーラ),Toscana,PAT,pending
+IT-VEG-ZUC-010,Zucchino Genovese,ジェノヴァのズッキーニ,Genovese Zucchini,ズッキーニ,ジェノヴァ系,Liguria,PAT,pending
+IT-VEG-ZUC-011,Zucchino Alberello di Sarzana,サルザーナのアルベレッロ,Alberello Zucchini of Sarzana,ズッキーニ,灌木型,Liguria,PAT,pending
+IT-VEG-CHI-011,Radicchio Rosso di Dosson,ドッソンの赤ラディッキオ,Red Radicchio of Dosson,チコリー|ラディッキオ,赤ラディッキオ,Veneto,De.Co.,pending
