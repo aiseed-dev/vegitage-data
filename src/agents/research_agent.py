@@ -104,6 +104,12 @@ def _vegetable_json_template(entry_id: str) -> str:
     "english": "英語名",
     "scientific": "学名"
   }},
+  "classification": {{
+    "items": ["品目1", "品目2"],
+    "sub_items": ["細品目1", "細品目2"],
+    "variety": "品種名",
+    "species": "学名（種レベル）"
+  }},
   "origin": {{
     "country": "国名",
     "region": "地域名",
@@ -660,6 +666,7 @@ JSONのみを出力してください。説明文やマークダウンは不要�
         entry_type: Literal["vegetable", "recipe"],
         *,
         draft_source: str | None = None,
+        item_dir: str | None = None,
     ) -> Path:
         """調査結果をJSONファイルとして保存
 
@@ -668,6 +675,8 @@ JSONのみを出力してください。説明文やマークダウンは不要�
             entry_type: "vegetable" or "recipe"
             draft_source: AI名を指定すると drafts/{ai名}/ に保存。
                           None の場合は data/ に直接保存（確定版）。
+            item_dir: 品目ディレクトリ名（例: "tomato", "garlic"）。
+                      指定すると vegetables/{item_dir}/ 以下に保存。
         """
         subdir = "vegetables" if entry_type == "vegetable" else "recipes"
 
@@ -675,6 +684,10 @@ JSONのみを出力してください。説明文やマークダウンは不要�
             out_dir = PROJECT_ROOT / "drafts" / draft_source / subdir
         else:
             out_dir = DATA_DIR / subdir
+
+        # 品目ディレクトリが指定されていれば配下に保存
+        if item_dir:
+            out_dir = out_dir / item_dir
 
         out_dir.mkdir(parents=True, exist_ok=True)
 

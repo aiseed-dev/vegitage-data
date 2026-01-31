@@ -24,3 +24,5 @@ dev = [
 vegitage-research = "src.agents.research_agent:main_cli"
 vegitage-research-gemini = "src.agents.gemini_agent:main_cli"
 vegitage-validate = "src.validators.validate_data:main_cli"
+vegitage-batch = "src.agents.batch_runner:main_cli"
+vegitage-pdf2json = "src.agents.pdf_converter:main_cli"
