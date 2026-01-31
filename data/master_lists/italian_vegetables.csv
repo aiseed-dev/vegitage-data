@@ -51,6 +51,12 @@ IT-VEG-PEP-002,Peperone di Senise,セニーゼのピーマン,Senise Pepper,ピ�
 IT-VEG-TOM-001,Pomodorino del Piennolo del Vesuvio,ヴェスヴィオのピエンノロミニトマト,Piennolo Cherry Tomato of Vesuvius,トマト,ミニトマト,Campania,DOP,pending
 IT-VEG-TOM-002,Pomodoro di Pachino,パキーノのトマト,Pachino Tomato,トマト,,Sicilia,IGP,pending
 IT-VEG-TOM-003,Pomodoro San Marzano dell'Agro Sarnese-Nocerino,サンマルツァーノトマト,San Marzano Tomato,トマト,加工用トマト,Campania,DOP,pending
+IT-VEG-TOM-004,Costoluto Fiorentino,コストルート・フィオレンティーノ,Costoluto Fiorentino Tomato,トマト,リブ付きトマト,Toscana,PAT,pending
+IT-VEG-TOM-005,Pomodoro Siccagno,シッカーニョトマト,Siccagno Tomato,トマト,乾燥栽培トマト,Sicilia,PAT,pending
+IT-VEG-TOM-006,Pomodoro Regina di Torre Canne,レジーナ・ディ・トッレ・カンネ,Regina di Torre Canne Tomato,トマト,保存用トマト,Puglia,Presidio,pending
+IT-VEG-TOM-007,Pomodoro Riccio di Parma,リッチョ・ディ・パルマ,Riccio di Parma Tomato,トマト,加工用トマト,Emilia-Romagna,PAT,pending
+IT-VEG-TOM-008,Pomodoro Camone,カモーネトマト,Camone Tomato,トマト,,Sardegna,PAT,pending
+IT-VEG-TOM-009,Pomodoro di Belmonte,ベルモンテトマト,Belmonte Tomato,トマト,大玉トマト,Calabria,PAT,pending
 IT-VEG-CHI-001,Radicchio di Chioggia,キオッジャのラディッキオ,Chioggia Radicchio,チコリー|ラディッキオ,,Veneto,IGP,pending
 IT-VEG-CHI-002,Radicchio di Verona,ヴェローナのラディッキオ,Verona Radicchio,チコリー|ラディッキオ,,Veneto,IGP,pending
 IT-VEG-CHI-003,Radicchio Rosso di Treviso,トレヴィーゾの赤ラディッキオ,Red Radicchio of Treviso,チコリー|ラディッキオ,赤ラディッキオ,Veneto,IGP,pending
@@ -58,3 +64,5 @@ IT-VEG-CHI-004,Radicchio Variegato di Castelfranco,カステルフランコの�
 IT-VEG-LEF-002,Rucola della Piana del Sele,セーレ平野のルッコラ,Arugula of the Sele Plain,ルッコラ|ハーブ,,Campania,IGP,pending
 IT-VEG-ONI-004,Scalogno di Romagna,ロマーニャのエシャロット,Romagna Shallot,タマネギ|エシャロット,,Emilia-Romagna,IGP,pending
 IT-VEG-CEL-001,Sedano Bianco di Sperlonga,スペルロンガの白セロリ,White Celery of Sperlonga,セロリ,白セロリ,Lazio,IGP,pending
+IT-VEG-KAL-001,Cavolo Nero di Toscana,トスカーナのカーボロネロ,Tuscan Black Kale (Lacinato),ケール・カーボロネロ,カーボロネロ,Toscana,PAT,pending
+IT-VEG-KAL-002,Cavolo Riccio (Cole Rizze),プーリアのカーボロ・リッチョ,Curly Kale (Cole Rizze),ケール・カーボロネロ,カーボロ・リッチョ,Puglia,PAT,pending
