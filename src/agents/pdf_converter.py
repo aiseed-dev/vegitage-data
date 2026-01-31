@@ -4,13 +4,24 @@ Deep Research PDF → 構造化 JSON 変換エージェント
 Gemini Deep Research で作成された PDF を読み込み、
 品目単位で構造化された JSON データに変換する。
 
+モデル役割分担:
+  - 歴史・文化情報（history / all）: Claude (claude-code-sdk) が PDF を読み取り抽出
+  - 栽培情報（cultivation）: Gemini Flash で十分
+
 使用方法:
-  python -m src.agents.pdf_converter docs/トマト調査.pdf --item tomato
-  python -m src.agents.pdf_converter docs/ニンニク調査.pdf --item garlic --type vegetable
+  # 歴史抽出（Claude）
+  python -m src.agents.pdf_converter docs/トマト調査.pdf --item トマト --focus history
+
+  # 栽培抽出（Gemini Flash）
+  python -m src.agents.pdf_converter docs/トマト調査.pdf --item トマト --focus cultivation
+
+  # 全情報抽出（Claude）
+  python -m src.agents.pdf_converter docs/トマト調査.pdf --item トマト
 """
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import sys
@@ -19,8 +30,6 @@ from pathlib import Path
 from typing import Literal
 
 from dotenv import load_dotenv
-from google import genai
-from google.genai.types import GenerateContentConfig, Part
 
 # .env 読み込み
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
@@ -29,12 +38,21 @@ from src.agents.research_agent import (
     PROJECT_ROOT,
     ResearchAgent,
     _extract_json,
-    _vegetable_json_template,
-    _recipe_json_template,
+    _extract_text,
 )
 
-GEMINI_MODEL = "gemini-3-pro-preview"
+# Claude SDK (history / all 用)
+from claude_code_sdk import (
+    ClaudeCodeOptions,
+    Message,
+    query,
+)
+
+# Gemini Flash モデル (cultivation 用)
 GEMINI_FLASH_MODEL = "gemini-2.5-flash-preview-05-20"
+
+# Claude モデル
+CLAUDE_MODEL = "claude-sonnet-4-20250514"
 
 
 # ============================================================
@@ -119,7 +137,7 @@ JSON 配列で出力してください。PDF に記載されている品種そ�
   "metadata": {{
     "collected_at": "{datetime.now(timezone.utc).isoformat()}",
     "agent_version": "1.0.0",
-    "research_method": "Gemini Deep Research → PDF → structured JSON (history focus)",
+    "research_method": "Deep Research PDF → Claude → structured JSON (history focus)",
     "confidence_score": 0.9,
     "needs_review": []
   }}
@@ -139,7 +157,7 @@ JSON 配列で出力してください。PDF に記載されている品種そ�
 
 
 def _item_cultivation_template(item_name: str) -> str:
-    """栽培情報に特化した抽出テンプレート（Flash モデル向け）"""
+    """栽培情報に特化した抽出テンプレート（Gemini Flash モデル向け）"""
     return f"""
 以下の PDF は「{item_name}」に関する調査結果です。
 品種ごとに栽培情報を中心に構造化 JSON を作成してください。
@@ -184,7 +202,7 @@ JSON 配列で出力。PDF に記載されている品種それぞれについ�
   "metadata": {{
     "collected_at": "{datetime.now(timezone.utc).isoformat()}",
     "agent_version": "1.0.0",
-    "research_method": "Gemini Flash → PDF → structured JSON (cultivation focus)",
+    "research_method": "Deep Research PDF → Gemini Flash → structured JSON (cultivation focus)",
     "confidence_score": 0.8,
     "needs_review": []
   }}
@@ -198,7 +216,7 @@ JSON 配列で出力。PDF に記載されている品種それぞれについ�
 
 
 def _item_vegetable_template(item_name: str) -> str:
-    """品目レベルの野菜テンプレート（複数品種を含む）"""
+    """品目レベルの野菜テンプレート（複数品種を含む、全情報抽出）"""
     return f"""
 以下の PDF は「{item_name}」に関する Deep Research の調査結果です。
 この PDF の情報を元に、品種ごとに構造化 JSON を作成してください。
@@ -224,7 +242,24 @@ JSON 配列で出力してください。PDF に記載されている品種そ�
   "origin": {{
     "country": "国名",
     "region": "地域名",
-    "history": "歴史的背景"
+    "history": {{
+      "summary": "歴史的背景の要約（200-400文字で丁寧に）",
+      "etymology": "名称の語源・由来",
+      "ancient_period": "古代における記録・利用",
+      "medieval_renaissance": "中世〜ルネサンス期の変遷",
+      "modern_history": "近現代の展開",
+      "key_references": [
+        {{
+          "author": "著者名",
+          "work": "著作名",
+          "year": "年代",
+          "description": "記述内容"
+        }}
+      ],
+      "traditional_preservation": "伝統的な保存・加工方法",
+      "regional_food_culture": "地域の食文化との結びつき",
+      "certification_history": "認証の経緯"
+    }}
   }},
   "characteristics": {{
     "appearance": {{ "shape": "...", "color": "...", "size": "..." }},
@@ -257,7 +292,7 @@ JSON 配列で出力してください。PDF に記載されている品種そ�
   "metadata": {{
     "collected_at": "{datetime.now(timezone.utc).isoformat()}",
     "agent_version": "1.0.0",
-    "research_method": "Gemini Deep Research → PDF → structured JSON",
+    "research_method": "Deep Research PDF → Claude → structured JSON",
     "confidence_score": 0.9,
     "needs_review": []
   }}
@@ -317,7 +352,7 @@ JSON 配列で出力してください。PDF に記載されている料理そ�
   "metadata": {{
     "collected_at": "{datetime.now(timezone.utc).isoformat()}",
     "agent_version": "1.0.0",
-    "research_method": "Gemini Deep Research → PDF → structured JSON",
+    "research_method": "Deep Research PDF → Claude → structured JSON",
     "confidence_score": 0.9,
     "needs_review": []
   }}
@@ -405,26 +440,79 @@ def _extract_json_array(text: str) -> list[dict]:
 
 
 # ============================================================
-# PDF 変換メイン
+# Claude による PDF 抽出（history / all）
 # ============================================================
 
-def convert_pdf(
+CLAUDE_SYSTEM_PROMPT = (
+    "あなたはデータ構造化の専門家です。"
+    "PDFの調査結果を正確にJSON形式に変換してください。"
+    "PDFに記載されている情報のみを使用し、推測は避けてください。"
+    "JSON配列のみを出力してください。説明文やマークダウンのコードブロックは不要です。"
+)
+
+
+async def _convert_with_claude(
     pdf_path: Path,
     item_name: str,
-    entry_type: Literal["vegetable", "recipe"] = "vegetable",
+    template: str,
     *,
-    item_dir: str | None = None,
-    model: str = GEMINI_MODEL,
-    focus: Literal["all", "history", "cultivation"] = "all",
-) -> list[Path]:
-    """Deep Research PDF を構造化 JSON に変換
+    model: str = CLAUDE_MODEL,
+) -> list[dict]:
+    """Claude (claude-code-sdk) を使用して PDF から構造化 JSON を抽出
 
-    Args:
-        focus: 抽出の焦点
-            - "all": 全情報を抽出（デフォルト）
-            - "history": 歴史・文化情報に集中（Deep Research PDF向け、Proモデル推奨）
-            - "cultivation": 栽培情報に集中（Flashモデルで十分）
+    Claude Code は Read ツールで PDF を直接読み取れるため、
+    PDF の内容を正確に理解した上で構造化データを生成する。
     """
+    prompt = f"""PDFファイルを読み込んで、構造化JSONを作成してください。
+
+## 手順
+1. まず Read ツールで以下の PDF ファイルを読み込んでください:
+   {pdf_path}
+
+2. PDF の内容を分析し、以下のテンプレートに従って構造化 JSON を作成してください。
+
+3. JSON 配列のみを出力してください。説明文は不要です。
+
+{template}"""
+
+    print(f"  Claude ({model}) で構造化中...")
+
+    messages: list[Message] = []
+    async for msg in query(
+        prompt=prompt,
+        options=ClaudeCodeOptions(
+            model=model,
+            system_prompt=CLAUDE_SYSTEM_PROMPT,
+            allowed_tools=["Read"],
+            permission_mode="bypassPermissions",
+            max_turns=5,
+        ),
+    ):
+        messages.append(msg)
+
+    text = _extract_text(messages)
+    print(f"  → {len(text)} 文字のレスポンス")
+
+    return _extract_json_array(text)
+
+
+# ============================================================
+# Gemini Flash による PDF 抽出（cultivation）
+# ============================================================
+
+def _convert_with_gemini(
+    pdf_path: Path,
+    item_name: str,
+    template: str,
+    *,
+    model: str = GEMINI_FLASH_MODEL,
+) -> list[dict]:
+    """Gemini Flash を使用して PDF から栽培情報を抽出
+
+    栽培情報の抽出は比較的単純なタスクなので Flash モデルで十分。
+    """
+    from google import genai
+    from google.genai.types import GenerateContentConfig, Part
 
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
@@ -432,39 +520,17 @@ def convert_pdf(
 
     client = genai.Client(api_key=api_key)
 
-    # cultivation フォーカスの場合、Flash モデルをデフォルトに
-    if focus == "cultivation" and model == GEMINI_MODEL:
-        model = GEMINI_FLASH_MODEL
+    print(f"  Gemini Flash ({model}) で構造化中...")
 
-    print(f"\n{'='*60}")
-    print(f"  PDF → JSON 変換")
-    print(f"  PDF: {pdf_path.name}")
-    print(f"  品目: {item_name}")
-    print(f"  タイプ: {entry_type}")
-    print(f"  フォーカス: {focus}")
-    print(f"  モデル: {model}")
-    print(f"{'='*60}\n")
-
-    # PDF 読み込み
-    print("[1/3] PDF 読み込み...")
     pdf_bytes = pdf_path.read_bytes()
     pdf_part = Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
-    print(f"  → {len(pdf_bytes):,} bytes")
 
-    # テンプレート選択
-    if entry_type == "recipe":
-        template = _item_recipe_template(item_name)
-    elif focus == "history":
-        template = _item_history_template(item_name)
-    elif focus == "cultivation":
-        template = _item_cultivation_template(item_name)
-    else:
-        template = _item_vegetable_template(item_name)
-
-    # Gemini で構造化
-    print("[2/3] Gemini で構造化中...")
     config = GenerateContentConfig(
-        system_instruction="あなたはデータ構造化の専門家です。PDFの調査結果を正確にJSON形式に変換してください。PDFに記載されている情報のみを使用し、推測は避けてください。",
+        system_instruction=(
+            "あなたはデータ構造化の専門家です。"
+            "PDFの調査結果を正確にJSON形式に変換してください。"
+            "PDFに記載されている情報のみを使用し、推測は避けてください。"
+        ),
         temperature=0.1,
     )
 
@@ -477,28 +543,109 @@ def convert_pdf(
     raw_text = response.text or ""
     print(f"  → {len(raw_text)} 文字のレスポンス")
 
-    # JSON 抽出
-    print("[3/3] JSON 抽出・保存...")
-    entries = _extract_json_array(raw_text)
+    return _extract_json_array(raw_text)
+
+
+# ============================================================
+# PDF 変換メイン
+# ============================================================
+
+def convert_pdf(
+    pdf_path: Path,
+    item_name: str,
+    entry_type: Literal["vegetable", "recipe"] = "vegetable",
+    *,
+    item_dir: str | None = None,
+    claude_model: str = CLAUDE_MODEL,
+    gemini_model: str = GEMINI_FLASH_MODEL,
+    focus: Literal["all", "history", "cultivation"] = "all",
+) -> list[Path]:
+    """Deep Research PDF を構造化 JSON に変換
+
+    モデル役割分担:
+      - history / all: Claude (claude-code-sdk) が PDF を読み取り構造化
+      - cultivation: Gemini Flash で栽培情報を抽出
+
+    Args:
+        pdf_path: 入力 PDF ファイルパス
+        item_name: 品目名（日本語）
+        entry_type: "vegetable" or "recipe"
+        item_dir: 保存先ディレクトリ名
+        claude_model: Claude モデル（history/all 用）
+        gemini_model: Gemini モデル（cultivation 用）
+        focus: 抽出の焦点
+            - "all": 全情報を抽出（Claude）
+            - "history": 歴史・文化情報に集中（Claude）
+            - "cultivation": 栽培情報に集中（Gemini Flash）
+    """
+    # モデル決定
+    use_claude = focus in ("all", "history")
+    active_model = claude_model if use_claude else gemini_model
+
+    print(f"\n{'='*60}")
+    print(f"  PDF → JSON 変換")
+    print(f"  PDF: {pdf_path.name}")
+    print(f"  品目: {item_name}")
+    print(f"  タイプ: {entry_type}")
+    print(f"  フォーカス: {focus}")
+    print(f"  エンジン: {'Claude' if use_claude else 'Gemini Flash'}")
+    print(f"  モデル: {active_model}")
+    print(f"{'='*60}\n")
+
+    # PDF 存在確認
+    if not pdf_path.exists():
+        print(f"ERROR: PDF ファイルが見つかりません: {pdf_path}")
+        return []
+
+    print(f"[1/3] PDF 確認... {pdf_path.stat().st_size:,} bytes")
+
+    # テンプレート選択
+    if entry_type == "recipe":
+        template = _item_recipe_template(item_name)
+    elif focus == "history":
+        template = _item_history_template(item_name)
+    elif focus == "cultivation":
+        template = _item_cultivation_template(item_name)
+    else:
+        template = _item_vegetable_template(item_name)
+
+    # 抽出実行
+    print("[2/3] 構造化抽出中...")
+    if use_claude:
+        entries = asyncio.run(
+            _convert_with_claude(
+                pdf_path, item_name, template, model=claude_model,
+            )
+        )
+        draft_source = "claude"
+    else:
+        entries = _convert_with_gemini(
+            pdf_path, item_name, template, model=gemini_model,
+        )
+        draft_source = "gemini"
 
     if not entries:
-        # raw text 保存
+        # raw text は既に各関数内でログ出力済み
         fallback_dir = PROJECT_ROOT / "drafts" / "pdf_raw"
         fallback_dir.mkdir(parents=True, exist_ok=True)
-        fallback_path = fallback_dir / f"{pdf_path.stem}_raw.txt"
-        fallback_path.write_text(raw_text, encoding="utf-8")
-        print(f"  WARNING: JSON抽出失敗。Raw text 保存: {fallback_path}")
+        fallback_path = fallback_dir / f"{pdf_path.stem}_{focus}_raw.txt"
+        fallback_path.write_text(
+            f"[{focus}] JSON抽出失敗。レスポンスが空または解析不能。",
+            encoding="utf-8",
+        )
+        print(f"  WARNING: JSON抽出失敗。ログ保存: {fallback_path}")
         return []
 
     print(f"  → {len(entries)} 件のエントリを抽出")
 
     # 保存
+    print("[3/3] JSON 保存...")
     saved_paths = []
     for entry in entries:
         path = ResearchAgent.save_entry(
             entry,
             entry_type,
-            draft_source="gemini",
+            draft_source=draft_source,
             item_dir=item_dir,
         )
         saved_paths.append(path)
@@ -539,15 +686,20 @@ def main_cli():
         help="エントリタイプ（default: vegetable）",
     )
     parser.add_argument(
-        "--model",
-        default=GEMINI_MODEL,
-        help=f"Gemini モデル（default: {GEMINI_MODEL}）",
+        "--claude-model",
+        default=CLAUDE_MODEL,
+        help=f"Claude モデル（history/all 用、default: {CLAUDE_MODEL}）",
+    )
+    parser.add_argument(
+        "--gemini-model",
+        default=GEMINI_FLASH_MODEL,
+        help=f"Gemini モデル（cultivation 用、default: {GEMINI_FLASH_MODEL}）",
     )
     parser.add_argument(
         "--focus",
         choices=["all", "history", "cultivation"],
         default="all",
-        help="抽出フォーカス: all=全情報, history=歴史・文化（Pro推奨）, cultivation=栽培（Flash可）",
+        help="抽出フォーカス: all=全情報(Claude), history=歴史・文化(Claude), cultivation=栽培(Gemini Flash)",
     )
     args = parser.parse_args()
 
@@ -566,7 +718,8 @@ def main_cli():
         item_name=args.item,
         entry_type=args.type,
         item_dir=item_dir,
-        model=args.model,
+        claude_model=args.claude_model,
+        gemini_model=args.gemini_model,
         focus=args.focus,
     )
 
