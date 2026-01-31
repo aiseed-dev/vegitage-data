@@ -66,3 +66,29 @@ IT-VEG-ONI-004,Scalogno di Romagna,ロマーニャのエシャロット,Romagna 
 IT-VEG-CEL-001,Sedano Bianco di Sperlonga,スペルロンガの白セロリ,White Celery of Sperlonga,セロリ,白セロリ,Lazio,IGP,pending
 IT-VEG-KAL-001,Cavolo Nero di Toscana,トスカーナのカーボロネロ,Tuscan Black Kale (Lacinato),ケール・カーボロネロ,カーボロネロ,Toscana,PAT,pending
 IT-VEG-KAL-002,Cavolo Riccio (Cole Rizze),プーリアのカーボロ・リッチョ,Curly Kale (Cole Rizze),ケール・カーボロネロ,カーボロ・リッチョ,Puglia,PAT,pending
+IT-VEG-ART-005,Carciofo Violetto di Sant'Erasmo,サンテラズモの紫アーティチョーク,Violet Artichoke of Sant'Erasmo,アーティチョーク,ヴィオレット種,Veneto,Presidio,pending
+IT-VEG-BRC-001,Broccolo Fiolaro di Creazzo,クレアッツォのフィオラーロ・ブロッコリー,Fiolaro Broccoli of Creazzo,ブロッコリー,フィオラーロ,Veneto,De.Co./PAT,pending
+IT-VEG-BRC-002,Broccolo di Torbole,トルボレのブロッコリー,Broccoli of Torbole,ブロッコリー,,Trentino-Alto Adige,Presidio,pending
+IT-VEG-BRC-003,Broccolo Romanesco,ブロッコロ・ロマネスコ,Romanesco Broccoli,ブロッコリー|カリフラワー,ロマネスコ,Lazio,PAT,pending
+IT-VEG-BRC-004,Broccolo Aprilatico di Paternopoli,パテルノーポリのアプリラーティコ・ブロッコリー,Aprilatico Broccoli of Paternopoli,ブロッコリー,,Campania,Presidio,pending
+IT-VEG-BRC-005,Broccolo di Rapa di Bisignano,ビジニャーノのブロッコリー・ディ・ラーパ,Broccoli Rabe of Bisignano,ブロッコリー,,Calabria,PAT,pending
+IT-VEG-ZUC-001,Cocozella di Napoli,ココツェッラ・ディ・ナポリ,Cocozella di Napoli,ズッキーニ,ナポリ系,Campania,PAT,pending
+IT-VEG-ZUC-002,Zucchino Romanesco,ズッキーノ・ロマネスコ,Romanesco Zucchini,ズッキーニ,ロマネスコ,Lazio,PAT,pending
+IT-VEG-ZUC-003,Zucchino Fiorentino,ズッキーノ・フィオレンティーノ,Florentine Zucchini,ズッキーニ,,Toscana,PAT,pending
+IT-VEG-ZUC-004,Trombetta di Albenga,アルベンガのトロンベッタ,Trombetta of Albenga,ズッキーニ,トロンベッタ,Liguria,De.Co./PAT,pending
+IT-VEG-ZUC-005,Nero di Milano,ネロ・ディ・ミラノ,Black of Milan Zucchini,ズッキーニ,ミラノ系,Lombardia,Traditional,pending
+IT-VEG-ZUC-006,Zucchina di Misilmeri,ミシルメリのズッキーナ,Zucchini of Misilmeri,ズッキーニ,,Sicilia,Traditional,pending
+IT-VEG-ZUC-007,Tonda di Piacenza,トンダ・ディ・ピアチェンツァ,Round of Piacenza Zucchini,ズッキーニ,丸型,Emilia-Romagna,Traditional,pending
+IT-VEG-CAB-001,Cavolo Verza di Montalto Dora,モンタルト・ドーラのヴェルザ,Savoy Cabbage of Montalto Dora,結球キャベツ,ヴェルザ,Piemonte,PAT,pending
+IT-VEG-CAB-002,Cavolo dell'Adige,アディジェのキャベツ,Cabbage of the Adige,結球キャベツ,,Veneto,PAT,pending
+IT-VEG-CAB-003,Cavolo Cappuccio di Vinigo di Cadore,ヴィニーゴのカップッチョ,Cabbage of Vinigo di Cadore,結球キャベツ,カップッチョ,Veneto,PAT,pending
+IT-VEG-CAB-004,Cavolo Cappuccio di Collina,コッリーナのカップッチョ,Cabbage of Collina,結球キャベツ,カップッチョ,Friuli Venezia Giulia,PAT,pending
+IT-VEG-KOR-001,Cavolo Trunzo di Aci,アチのトロンゾキャベツ,Trunzo Kohlrabi of Aci,コールラビ,トロンゾ,Sicilia,Presidio,pending
+IT-VEG-KOR-002,Chepe de Murte,ケープ・デ・ムルテ,Chepe de Murte Kohlrabi,コールラビ,,Puglia,PAT,pending
+IT-VEG-KOR-003,Grucciolo di Putignano,グルッチョロ・ディ・プティニャーノ,Grucciolo of Putignano,コールラビ,,Puglia,Traditional,pending
+IT-VEG-CIM-001,Cima di rapa di Minervino Murge,ミネルヴィーノ・ムルジェのチーメ・ディ・ラーパ,Turnip Greens of Minervino Murge,チーメ・ディ・ラーパ,,Puglia,PAT,pending
+IT-VEG-CIM-002,Friarielli,フリアリエッリ,Friarielli (Neapolitan Turnip Greens),チーメ・ディ・ラーパ|フリアリエッリ,,Campania,PAT,pending
+IT-VEG-CIM-003,Broccoletto di Anguillara,アングイッラーラのブロッコレッティ,Broccoletti of Anguillara,チーメ・ディ・ラーパ|ブロッコレッティ,,Lazio,PAT,pending
+IT-VEG-ROT-002,Rapa di Caprauna,カプラウナのカブ,Turnip of Caprauna,カブ,,Piemonte,Presidio,pending
+IT-VEG-ROT-003,Rapa di Milano colletto viola,ミラノの紫首カブ,Milan Purple Collar Turnip,カブ,,Lombardia,Traditional,pending
+IT-VEG-ROT-004,Rapa catalogna di Roccasecca,ロッカセッカのカタローニャカブ,Roccasecca Catalogna Turnip,カブ,,Lazio,PAT,pending
