@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Vegitage — イタリア野菜 Web サイトビルダー
+Vegitage — 野菜辞典 Web サイトビルダー
 
-web/イタリア野菜/*.md → web/dist/ に静的 HTML を生成する。
+web/<category>/*.md → web/site/<category>/ に静的 HTML を生成する。
 Usage: python web/build.py
 """
 
@@ -17,10 +17,20 @@ from markdown.extensions.tables import TableExtension
 # ── Paths ──────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
 WEB_DIR = ROOT / "web"
-SRC_DIR = WEB_DIR / "イタリア野菜"
 STATIC_DIR = WEB_DIR / "static"
 DIST_DIR = WEB_DIR / "site"
 ITEMS_CSV = ROOT / "data" / "master_lists" / "items.csv"
+
+# ── Categories ────────────────────────────────────────
+CATEGORIES = {
+    "italian": {
+        "title": "イタリア野菜図鑑",
+        "subtitle": "Le Verdure Italiane — 地中海の恵みと食文化の物語",
+        "description": "イタリア各地の風土と歴史が育んだ伝統野菜を紹介します。",
+        "nav_label": "イタリア野菜一覧",
+        "footer": "イタリア伝統野菜・料理データベース",
+    },
+}
 
 # ── Markdown converter ─────────────────────────────────
 md = markdown.Markdown(
@@ -99,7 +109,9 @@ def wrap_tables(html: str) -> str:
 
 
 # ── HTML Templates ─────────────────────────────────────
-def html_base(title: str, body: str, css_path: str = "style.css") -> str:
+def html_base(title: str, body: str, cat: dict, css_path: str = "style.css") -> str:
+    nav_label = cat["nav_label"]
+    footer_text = cat["footer"]
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -114,7 +126,7 @@ def html_base(title: str, body: str, css_path: str = "style.css") -> str:
   <div class="site-header-inner">
     <a href="index.html" class="site-logo">Vegitage</a>
     <nav class="site-nav">
-      <a href="index.html">イタリア野菜一覧</a>
+      <a href="index.html">{nav_label}</a>
     </nav>
   </div>
 </header>
@@ -124,7 +136,7 @@ def html_base(title: str, body: str, css_path: str = "style.css") -> str:
 </main>
 
 <footer class="site-footer">
-  <p>Vegitage — イタリア伝統野菜・料理データベース</p>
+  <p>Vegitage — {footer_text}</p>
   <p>データは <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">CC BY-SA 4.0</a> で提供されています。</p>
 </footer>
 
@@ -132,8 +144,8 @@ def html_base(title: str, body: str, css_path: str = "style.css") -> str:
 </html>"""
 
 
-def build_article(md_path: Path) -> None:
-    """1 つの MD ファイルを HTML に変換して dist/ に出力する。"""
+def build_article(md_path: Path, out_dir: Path, cat: dict) -> None:
+    """1 つの MD ファイルを HTML に変換して出力する。"""
     text = md_path.read_text(encoding="utf-8")
     meta = extract_metadata(text)
 
@@ -142,15 +154,16 @@ def build_article(md_path: Path) -> None:
     html_body = convert_md_links(html_body)
     html_body = wrap_tables(html_body)
 
+    nav_label = cat["nav_label"]
     breadcrumb = (
         '<div class="breadcrumb">'
-        '<a href="index.html">イタリア野菜一覧</a>'
+        f'<a href="index.html">{nav_label}</a>'
         "<span>›</span>"
         f"{meta['short_name']}"
         "</div>"
     )
 
-    back_link = '<a href="index.html" class="back-link">← イタリア野菜一覧に戻る</a>'
+    back_link = f'<a href="index.html" class="back-link">← {nav_label}に戻る</a>'
 
     content = f"""{breadcrumb}
 <article class="article-content">
@@ -158,13 +171,13 @@ def build_article(md_path: Path) -> None:
 </article>
 {back_link}"""
 
-    out_path = DIST_DIR / (md_path.stem + ".html")
-    out_path.write_text(html_base(meta["title"], content), encoding="utf-8")
+    out_path = out_dir / (md_path.stem + ".html")
+    out_path.write_text(html_base(meta["title"], content, cat), encoding="utf-8")
     return meta
 
 
-def build_index(articles: list[dict]) -> None:
-    """トップページ（野菜一覧）を生成する。"""
+def build_index(articles: list[dict], out_dir: Path, cat: dict) -> None:
+    """カテゴリのトップページ（野菜一覧）を生成する。"""
     # Sort by short_name
     articles.sort(key=lambda a: a["short_name"])
 
@@ -179,13 +192,17 @@ def build_index(articles: list[dict]) -> None:
             f"</a>"
         )
 
+    cat_title = cat["title"]
+    cat_subtitle = cat["subtitle"]
+    cat_desc = cat["description"]
+
     body = f"""<div class="index-hero">
-  <h1>イタリア野菜図鑑</h1>
-  <p class="subtitle">Le Verdure Italiane — 地中海の恵みと食文化の物語</p>
+  <h1>{cat_title}</h1>
+  <p class="subtitle">{cat_subtitle}</p>
 </div>
 
 <p class="index-description">
-  イタリア各地の風土と歴史が育んだ伝統野菜を紹介します。<br>
+  {cat_desc}<br>
   DOP・IGP認定品種から地方の在来品種まで、{len(articles)}種の野菜の世界をお楽しみください。
 </p>
 
@@ -194,8 +211,8 @@ def build_index(articles: list[dict]) -> None:
 </div>
 """
 
-    (DIST_DIR / "index.html").write_text(
-        html_base("イタリア野菜図鑑", body), encoding="utf-8"
+    (out_dir / "index.html").write_text(
+        html_base(cat_title, body, cat), encoding="utf-8"
     )
 
 
@@ -205,24 +222,33 @@ def main():
         shutil.rmtree(DIST_DIR)
     DIST_DIR.mkdir(parents=True)
 
-    # Copy CSS
-    shutil.copy2(STATIC_DIR / "style.css", DIST_DIR / "style.css")
+    total = 0
 
-    # Build each article
-    articles = []
-    md_files = sorted(SRC_DIR.glob("*.md"))
-    print(f"Found {len(md_files)} markdown files")
+    for cat_key, cat in CATEGORIES.items():
+        src_dir = WEB_DIR / cat_key
+        out_dir = DIST_DIR / cat_key
+        out_dir.mkdir(parents=True, exist_ok=True)
 
-    for md_path in md_files:
-        meta = build_article(md_path)
-        meta["filename"] = md_path.stem + ".html"
-        articles.append(meta)
-        print(f"  ✓ {md_path.name} → {meta['filename']}")
+        # Copy CSS
+        shutil.copy2(STATIC_DIR / "style.css", out_dir / "style.css")
 
-    # Build index
-    build_index(articles)
-    print(f"\n  ✓ index.html (一覧ページ)")
-    print(f"\nDone! {len(articles) + 1} files generated in {DIST_DIR.relative_to(ROOT)}/")
+        # Build each article
+        articles = []
+        md_files = sorted(src_dir.glob("*.md"))
+        print(f"\n[{cat_key}] {cat['title']}: {len(md_files)} files")
+
+        for md_path in md_files:
+            meta = build_article(md_path, out_dir, cat)
+            meta["filename"] = md_path.stem + ".html"
+            articles.append(meta)
+            print(f"  ✓ {md_path.name} → {meta['filename']}")
+
+        # Build index
+        build_index(articles, out_dir, cat)
+        print(f"  ✓ index.html (一覧ページ)")
+        total += len(articles) + 1
+
+    print(f"\nDone! {total} files generated in {DIST_DIR.relative_to(ROOT)}/")
 
 
 if __name__ == "__main__":

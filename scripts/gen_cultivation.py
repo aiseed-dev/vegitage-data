@@ -23,8 +23,8 @@ from google.genai.types import GenerateContentConfig
 
 # ── Paths ──────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
-SRC_DIR = ROOT / "web" / "イタリア野菜"
-OUT_DIR = ROOT / "web" / "イタリア野菜" / "栽培"
+SRC_DIR = ROOT / "web" / "italian"
+OUT_DIR = ROOT / "web" / "italian" / "cultivation"
 VARIETIES_CSV = ROOT / "data" / "master_lists" / "italian_vegetables.csv"
 
 load_dotenv(ROOT / ".env")
