@@ -28,7 +28,7 @@ OUT_DIR = ROOT / "web" / "イタリア野菜" / "栽培"
 load_dotenv(ROOT / ".env")
 
 # ── Gemini client ──────────────────────────────────────
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-pro-preview-06-05")
 
 
 def get_client():
@@ -47,6 +47,8 @@ PROMPT_TEMPLATE = """以下は「{name}」についてのイタリア野菜解�
 ---
 
 この記事の内容をふまえて、「{name}」の栽培ガイドをMarkdownで書いてください。
+
+記事で紹介されているイタリアの伝統品種と、日本で一般的に流通している品種との違い（味、形、栽培特性など）にも触れてください。
 
 対象読者は日本の家庭菜園愛好家です。
 文体は「です/ます」調で、読みやすく実用的な内容にしてください。
