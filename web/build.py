@@ -127,6 +127,14 @@ def html_page(title: str, body: str, cat: dict, css_path: str = "style.css") -> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title} — Vegitage</title>
 <link rel="stylesheet" href="{css_path}">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6V2KRRWHS8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', 'G-6V2KRRWHS8');
+</script>
 </head>
 <body>
 
