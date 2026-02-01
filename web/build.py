@@ -107,9 +107,6 @@ def html_base(title: str, body: str, css_path: str = "style.css") -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title} — Vegitage</title>
 <link rel="stylesheet" href="{css_path}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;800&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 

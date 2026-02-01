@@ -19,9 +19,9 @@
   --color-blockquote-bg: #f8f6f0;
   --color-blockquote-border: #c9a96e;
   --color-code-bg: #f5f3ee;
-  --font-body: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  --font-heading: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
-  --font-mono: "Source Code Pro", "Menlo", monospace;
+  --font-body: serif;
+  --font-heading: sans-serif;
+  --font-mono: monospace;
   --max-width: 820px;
   --radius: 6px;
 }
