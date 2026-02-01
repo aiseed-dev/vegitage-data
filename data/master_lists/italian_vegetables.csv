@@ -171,3 +171,69 @@ IT-VEG-ZUC-009,Zucchina Mora Pisana,ピサの黒ズッキーニ,Pisan Dark Zucch
 IT-VEG-ZUC-010,Zucchino Genovese,ジェノヴァのズッキーニ,Genovese Zucchini,ズッキーニ,ジェノヴァ系,Liguria,PAT,pending
 IT-VEG-ZUC-011,Zucchino Alberello di Sarzana,サルザーナのアルベレッロ,Alberello Zucchini of Sarzana,ズッキーニ,灌木型,Liguria,PAT,pending
 IT-VEG-CHI-011,Radicchio Rosso di Dosson,ドッソンの赤ラディッキオ,Red Radicchio of Dosson,チコリー|ラディッキオ,赤ラディッキオ,Veneto,De.Co.,pending
+IT-VEG-EGG-001,Melanzana Rossa di Rotonda,ロトンダの赤ナス,Red Eggplant of Rotonda,ナス,赤ナス,Basilicata,DOP,pending
+IT-VEG-EGG-002,Melanzana Violetta di Longobardi,ロンゴバルディの紫ナス,Purple Eggplant of Longobardi,ナス,紫ナス,Calabria,Presidio,pending
+IT-VEG-EGG-003,Melanzana Bianca di Senise,セニーゼの白ナス,White Eggplant of Senise,ナス,白ナス,Basilicata,PAT,pending
+IT-VEG-EGG-004,Melanzana Violetta di Ostuni,オストゥーニの紫ナス,Purple Eggplant of Ostuni,ナス,紫ナス,Puglia,Presidio,pending
+IT-VEG-OLV-001,Olio Terra di Bari,テッラ・ディ・バーリ オリーブオイル,Terra di Bari Olive Oil,オリーブ,オリーブオイル,Puglia,DOP,pending
+IT-VEG-OLV-002,Olio Chianti Classico,キアンティ・クラシコ オリーブオイル,Chianti Classico Olive Oil,オリーブ,オリーブオイル,Toscana,DOP,pending
+IT-VEG-OLV-003,Olio Riviera Ligure,リヴィエラ・リグーレ オリーブオイル,Riviera Ligure Olive Oil,オリーブ,オリーブオイル,Liguria,DOP,pending
+IT-VEG-OLV-004,Olio Toscano,トスカーナ オリーブオイル,Toscano Olive Oil,オリーブ,オリーブオイル,Toscana,IGP,pending
+IT-VEG-OLV-005,Olio di Puglia,プーリア オリーブオイル,Puglia Olive Oil,オリーブ,オリーブオイル,Puglia,IGP,pending
+IT-VEG-PEP-003,Peperone di Carmagnola,カルマニョーラのペペローネ,Carmagnola Pepper,ピーマン,甘味大型種,Piemonte,PAT,pending
+IT-VEG-PEP-004,Peperone Quadrato della Motta,モッタの正方形ペペローネ,Square Pepper of Motta di Costigliole,ピーマン,正方形種,Piemonte,Presidio,pending
+IT-VEG-PEP-005,Peperone di Capriglio,カプリリオのペペローネ,Capriglio Pepper,ピーマン,心臓型,Piemonte,Presidio,pending
+IT-VEG-PEP-006,Papaccella Napoletana,パパッチェッラ・ナポレターナ,Neapolitan Papaccella Pepper,ピーマン,球形酢漬種,Campania,Presidio,pending
+IT-VEG-PEP-007,Peperone di Pontecorvo,ポンテコルヴォのペペローネ,Pontecorvo Pepper,ピーマン,コルネット型,Lazio,DOP,pending
+IT-VEG-PEP-008,Peperone di Senise,セニーゼのペペローネ,Senise Pepper,ピーマン,乾燥種,Basilicata,IGP,pending
+IT-VEG-LMN-001,Limone Costa d'Amalfi,アマルフィ海岸のレモン,Amalfi Coast Lemon,レモン,スフザート・アマルフィターノ,Campania,IGP,pending
+IT-VEG-LMN-002,Limone di Sorrento,ソレントのレモン,Sorrento Lemon,レモン,フェミネッロ・オヴァーレ,Campania,IGP,pending
+IT-VEG-LMN-003,Limone Interdonato Messina,インテルドナート・レモン,Interdonato Lemon of Messina,レモン,インテルドナート,Sicilia,IGP,pending
+IT-VEG-LMN-004,Limone di Rocca Imperiale,ロッカ・インペリアーレのレモン,Rocca Imperiale Lemon,レモン,フェミネッロ・コムーネ,Calabria,IGP,pending
+IT-VEG-LMN-005,Limone Femminello del Gargano,ガルガーノのフェミネッロ・レモン,Femminello Lemon of Gargano,レモン,フェミネッロ・デル・ガルガーノ,Puglia,IGP,pending
+IT-VEG-LMN-006,Sa Pompia,サ・ポンピア,Sa Pompia Citrus,レモン,ポンピア,Sardegna,Presidio,pending
+IT-VEG-LNT-004,Lenticchia di Ustica,ウスティカ島のレンズ豆,Ustica Lentil,レンズ豆,極小粒種,Sicilia,Presidio,pending
+IT-VEG-LNT-005,Lenticchia di Villalba,ヴィッラルバのレンズ豆,Villalba Lentil,レンズ豆,高鉄分種,Sicilia,Presidio,pending
+IT-VEG-LNT-006,Lenticchia di Altamura,アルタムラのレンズ豆,Altamura Lentil,レンズ豆,大粒種,Puglia,IGP,pending
+IT-VEG-LNT-007,Lenticchia di Castelluccio di Norcia,カステッルッチョ・ディ・ノルチャのレンズ豆,Castelluccio di Norcia Lentil,レンズ豆,小粒種,Umbria,IGP,pending
+IT-VEG-LNT-008,Lenticchia di Onano,オナノのレンズ豆,Onano Lentil,レンズ豆,火山性土壌種,Lazio,PAT,pending
+IT-VEG-RIC-001,Riso di Baraggia Biellese e Vercellese,バラッジャの米,Baraggia Rice,米,リゾット用米,Piemonte,DOP,pending
+IT-VEG-RIC-002,Riso Nano Vialone Veronese,ナノ・ヴィアローネ・ヴェロネーゼ,Nano Vialone Veronese Rice,米,中粒種,Veneto,IGP,pending
+IT-VEG-RIC-003,Riso del Delta del Po,ポー川デルタの米,Po Delta Rice,米,リゾット用米,Veneto,IGP,pending
+IT-VEG-RIC-004,Riso di Grumolo delle Abbadesse,グルーモロ・デッレ・アッバデッセの米,Grumolo delle Abbadesse Rice,米,伝統栽培米,Veneto,Presidio,pending
+IT-VEG-WHT-001,Farro della Garfagnana,ガルファニャーナのファッロ,Garfagnana Emmer Wheat,小麦,二粒小麦,Toscana,IGP,pending
+IT-VEG-WHT-002,Grano Senatore Cappelli,セナトーレ・カッペッリ,Senatore Cappelli Durum Wheat,小麦,硬質小麦,Puglia,PAT,pending
+IT-VEG-WHT-003,Grano Tumminia,トゥンミニア,Tumminia Durum Wheat,小麦,古代硬質小麦,Sicilia,Presidio,pending
+IT-VEG-WHT-004,Grano Solina,ソリーナ,Solina Soft Wheat,小麦,軟質小麦,Abruzzo,Presidio,pending
+IT-VEG-WHT-005,Grano Russello,ルッセッロ,Russello Durum Wheat,小麦,古代硬質小麦,Sicilia,Presidio,pending
+IT-VEG-FIG-001,Fico Bianco del Cilento,チレントの白イチジク,White Fig of Cilento,イチジク,乾燥イチジク,Campania,DOP,pending
+IT-VEG-FIG-002,Fichi di Cosenza,コゼンツァのイチジク,Figs of Cosenza,イチジク,乾燥イチジク,Calabria,DOP,pending
+IT-VEG-FIG-003,Figo Moro da Caneva,カネヴァの黒イチジク,Black Fig of Caneva,イチジク,生食用イチジク,Friuli Venezia Giulia,Presidio,pending
+IT-VEG-FIG-004,Fico Mandorlato di San Michele Salentino,サン・ミケーレ・サレンティーノのアーモンド入りイチジク,Almond Fig of San Michele Salentino,イチジク,乾燥加工品,Puglia,Presidio,pending
+IT-VEG-FIG-005,Fico di San Mango,サン・マンゴのイチジク,Fig of San Mango,イチジク,生食用イチジク,Campania,PAT,pending
+IT-VEG-MLN-001,Melone Mantovano,マントヴァのメロン,Mantua Melon,メロン,網目メロン,Lombardia,IGP,pending
+IT-VEG-MLN-002,Antichi Meloni Reggiani,レッジョ・エミリアの古代メロン,Ancient Reggian Melons,メロン,伝統品種メロン,Emilia-Romagna,Presidio,pending
+IT-VEG-MLN-003,Melone Cartucciaru di Paceco,パチェーコのカルッチュアル・メロン,Cartucciaru Melon of Paceco,メロン,冬メロン,Sicilia,Presidio,pending
+IT-VEG-MLN-004,Melone Retato di Calvenzano,カルヴェンツァーノの網目メロン,Netted Melon of Calvenzano,メロン,大型網目メロン,Lombardia,Presidio,pending
+IT-VEG-MLN-005,Purceddu d'Alcamo,アルカモのプルチェッドゥ,Purceddu of Alcamo,メロン,冬メロン,Sicilia,PAT,pending
+IT-VEG-LUP-001,Lupino Gigante di Vairano,ヴァイラーノの巨大ルピニ豆,Giant Lupin of Vairano,ルピニ豆,大粒白ルピナス,Campania,Presidio,pending
+IT-VEG-LUP-002,Lupino di Anterivo,アンテリーヴォのルピニ豆,Lupin of Anterivo,ルピニ豆,焙煎用ルピナス,Trentino-Alto Adige,PAT,pending
+IT-VEG-LUP-003,Lupino del Pollino,ポッリーノのルピニ豆,Lupin of Pollino,ルピニ豆,白ルピナス,Basilicata,PAT,pending
+IT-VEG-LUP-004,Lupino bianco del Tavoliere,タヴォリエレの白ルピニ豆,White Lupin of Tavoliere,ルピニ豆,白ルピナス,Puglia,PAT,pending
+IT-VEG-PPC-001,Peperoncino di Calabria,カラブリアのペペロンチーノ,Chili Pepper of Calabria,ペペロンチーノ,辛味トウガラシ,Calabria,IGP,pending
+IT-VEG-PPC-002,Peperoncino di 7 anni,7年トウガラシ,Seven-Year Chili Pepper,ペペロンチーノ,詰め物用トウガラシ,Puglia,PAT,pending
+IT-VEG-PPC-003,Lazzaretto Abruzzese,ラッツァレット・アブルッツェーゼ,Lazzaretto Abruzzese,ペペロンチーノ,カイエンナ系選抜種,Abruzzo,PAT,pending
+IT-VEG-PPC-004,Friariello napoletano,フリアリエッロ・ナポレターノ,Neapolitan Friariello,ペペロンチーノ,甘味小型トウガラシ,Campania,PAT,pending
+IT-VEG-RSM-001,Rosmarino di Montevecchia,モンテヴェッキアのローズマリー,Rosemary of Montevecchia,ローズマリー,生鮮・乾燥ハーブ,Lombardia,PAT,pending
+IT-VEG-RSM-002,Rosmarino di Villarosa,ヴィッラローザのローズマリー,Rosemary of Villarosa,ローズマリー,乾燥ハーブ,Sicilia,PAT,pending
+IT-VEG-AGR-001,Agretti (Liscari),リスカリ（アグレッティ）,Agretti (Liscari),アグレッティ,伝統野菜,Emilia-Romagna,PAT,pending
+IT-VEG-AGR-002,Agretti di Roma,ローマのアグレッティ,Roman Agretti,アグレッティ,伝統野菜,Lazio,PAT,pending
+IT-VEG-RUC-001,Rucola della Piana del Sele,ピアーナ・デル・セーレのルッコラ,Piana del Sele Rocket,ルッコラ,セルヴァーティカ（野生種）,Campania,IGP,pending
+IT-VEG-LET-001,Insalata di Lusia,ルージアのインサラータ,Lusia Lettuce,レタス,カプッチャ,Veneto,IGP,pending
+IT-VEG-LET-002,Lattughino di Moncalieri,モンカリエーリのラットゥギーノ,Moncalieri Baby Lettuce,レタス,パレッラ,Piemonte,PAT,pending
+IT-VEG-LET-003,Lattuga Signorinella di Formia,フォルミアのシニョリネッラ,Formia Signorinella Lettuce,レタス,シニョリネッラ,Lazio,PAT,pending
+IT-VEG-LET-004,Lattuga di Sestu,セストゥのレタス,Sestu Lettuce,レタス,結球型大型品種,Sardegna,PAT,pending
+IT-VEG-RAD-001,Ravanello Lungo o Tabasso,ラバネッロ・ルンゴ,Long Radish (Tabasso),ラディッシュ,長ラディッシュ,Piemonte,PAT,pending
+IT-VEG-RAD-002,Ravanello Lungo di Sestu,セストゥの長ラディッシュ,Sestu Long Radish,ラディッシュ,長ラディッシュ,Sardegna,PAT,pending
+IT-VEG-SAG-001,Salvia di Montevecchia,モンテヴェッキアのセージ,Montevecchia Sage,セージ,地域固有エコタイプ,Lombardia,PAT,pending
+IT-VEG-SAG-002,Salvia di Puglia,プーリアのセージ,Apulian Sage,セージ,伝統セージ,Puglia,PAT,pending
