@@ -3,6 +3,11 @@
 Vegitage — 野菜辞典 Web サイトビルダー
 
 web/<category>/*.md → web/site/<category>/ に静的 HTML を生成する。
+
+記事HTMLは2段階で生成:
+  1. MD → 本文HTML (article-content)
+  2. 本文HTML → 公開用テンプレート (2カラム: 本文 + サイドバー)
+
 Usage: python web/build.py
 """
 
@@ -13,6 +18,7 @@ from pathlib import Path
 
 import markdown
 from markdown.extensions.tables import TableExtension
+from markdown.extensions.toc import TocExtension
 
 # ── Paths ──────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
@@ -36,6 +42,7 @@ CATEGORIES = {
 md = markdown.Markdown(
     extensions=[
         TableExtension(),
+        TocExtension(toc_depth="2-3", slugify=lambda value, separator: re.sub(r'\s+', separator, value.strip().lower())),
         "markdown.extensions.fenced_code",
         "markdown.extensions.nl2br",
     ],
@@ -109,7 +116,8 @@ def wrap_tables(html: str) -> str:
 
 
 # ── HTML Templates ─────────────────────────────────────
-def html_base(title: str, body: str, cat: dict, css_path: str = "style.css") -> str:
+def html_page(title: str, body: str, cat: dict, css_path: str = "style.css") -> str:
+    """公開用HTMLページを生成する。"""
     nav_label = cat["nav_label"]
     footer_text = cat["footer"]
     return f"""<!DOCTYPE html>
@@ -144,15 +152,49 @@ def html_base(title: str, body: str, cat: dict, css_path: str = "style.css") -> 
 </html>"""
 
 
-def build_article(md_path: Path, out_dir: Path, cat: dict) -> None:
-    """1 つの MD ファイルを HTML に変換して出力する。"""
+# ── Article body (content only) ───────────────────────
+def build_article_body(md_text: str) -> tuple[str, str]:
+    """MD → 本文HTMLと目次HTMLを生成する。テンプレートは含まない。"""
+    md.reset()
+    html_body = md.convert(md_text)
+    html_body = convert_md_links(html_body)
+    html_body = wrap_tables(html_body)
+    toc_html = md.toc
+    return html_body, toc_html
+
+
+# ── 2-column layout wrapper ──────────────────────────
+def wrap_two_column(article_html: str, toc_html: str, breadcrumb: str, back_link: str) -> str:
+    """本文HTMLを2カラムの公開用レイアウトに入れ込む。"""
+    sidebar = f"""<aside class="sidebar">
+  <div class="sidebar-toc">
+    <h2 class="sidebar-heading">目次</h2>
+    {toc_html}
+  </div>
+  <div class="sidebar-ad">
+    <!-- AdSense placeholder -->
+  </div>
+</aside>"""
+
+    return f"""{breadcrumb}
+<div class="two-column">
+  <div class="column-main">
+    <article class="article-content">
+{article_html}
+    </article>
+    {back_link}
+  </div>
+  {sidebar}
+</div>"""
+
+
+# ── Build article page ────────────────────────────────
+def build_article(md_path: Path, out_dir: Path, cat: dict) -> dict:
+    """1 つの MD ファイルを2カラムHTMLに変換して出力する。"""
     text = md_path.read_text(encoding="utf-8")
     meta = extract_metadata(text)
 
-    md.reset()
-    html_body = md.convert(text)
-    html_body = convert_md_links(html_body)
-    html_body = wrap_tables(html_body)
+    article_html, toc_html = build_article_body(text)
 
     nav_label = cat["nav_label"]
     breadcrumb = (
@@ -162,17 +204,12 @@ def build_article(md_path: Path, out_dir: Path, cat: dict) -> None:
         f"{meta['short_name']}"
         "</div>"
     )
-
     back_link = f'<a href="index.html" class="back-link">← {nav_label}に戻る</a>'
 
-    content = f"""{breadcrumb}
-<article class="article-content">
-{html_body}
-</article>
-{back_link}"""
+    content = wrap_two_column(article_html, toc_html, breadcrumb, back_link)
 
     out_path = out_dir / (md_path.stem + ".html")
-    out_path.write_text(html_base(meta["title"], content, cat), encoding="utf-8")
+    out_path.write_text(html_page(meta["title"], content, cat), encoding="utf-8")
     return meta
 
 
@@ -212,7 +249,7 @@ def build_index(articles: list[dict], out_dir: Path, cat: dict) -> None:
 """
 
     (out_dir / "index.html").write_text(
-        html_base(cat_title, body, cat), encoding="utf-8"
+        html_page(cat_title, body, cat), encoding="utf-8"
     )
 
 
