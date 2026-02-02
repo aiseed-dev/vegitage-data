@@ -109,8 +109,8 @@ def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
 
 def make_client() -> genai.Client:
     """Vertex AI優先、フォールバックでGemini APIキーを使用"""
-    project = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("VERTEX_PROJECT")
-    location = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
+    project = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GOOGLE_API_KEY")
+    location = os.environ.get("GOOGLE_CLOUD_LOCATION", "global")
 
     if project:
         print(f"Vertex AI API ({project} / {location})\n")
