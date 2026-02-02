@@ -2,7 +2,8 @@
 """
 Vegitage — 野菜辞典 Web サイトビルダー
 
-web/<category>/*.md → web/site/<category>/ に静的 HTML を生成する。
+web/<category>/*.md              → web/site/<category>/        に静的 HTML を生成
+web/<category>/cultivation/*.md  → web/site/<category>/cultivation/ に栽培ガイド HTML を生成
 
 記事HTMLは2段階で生成:
   1. MD → 本文HTML (article-content)
@@ -196,6 +197,72 @@ def wrap_two_column(article_html: str, toc_html: str, breadcrumb: str, back_link
 </div>"""
 
 
+# ── Cultivation guide preprocessing ──────────────────
+def preprocess_cultivation(md_text: str, veg_name: str) -> str:
+    """栽培ガイドMDの前処理: 導入文を削除し、タイトルを統一する。
+
+    1. 最初の --- または # より前のテキストを削除
+    2. 元のh1タイトルを「# {veg_name}栽培ガイド」に置換
+    """
+    lines = md_text.split("\n")
+
+    # 最初の --- または # の位置を探す
+    start = 0
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped == "---" or stripped.startswith("# "):
+            start = i
+            break
+
+    # --- で始まる場合はその次の行から
+    if lines[start].strip() == "---":
+        start += 1
+
+    # 空行をスキップ
+    while start < len(lines) and not lines[start].strip():
+        start += 1
+
+    body_lines = lines[start:]
+
+    # h1 タイトル行を置換
+    new_title = f"# {veg_name}栽培ガイド"
+    for i, line in enumerate(body_lines):
+        if line.strip().startswith("# "):
+            body_lines[i] = new_title
+            break
+
+    return "\n".join(body_lines)
+
+
+# ── Build cultivation guide page ─────────────────────
+def build_cultivation(md_path: Path, out_dir: Path, cat: dict, parent_filename: str | None = None) -> dict:
+    """栽培ガイドMDを前処理してHTMLに変換する。"""
+    veg_name = md_path.stem
+    text = md_path.read_text(encoding="utf-8")
+    text = preprocess_cultivation(text, veg_name)
+
+    article_html, toc_html = build_article_body(text)
+
+    nav_label = cat["nav_label"]
+    # パンくず: 一覧 > 野菜名 > 栽培ガイド
+    breadcrumb_parts = [f'<a href="../index.html">{nav_label}</a>']
+    if parent_filename:
+        breadcrumb_parts.append(f'<a href="../{parent_filename}">{veg_name}</a>')
+    breadcrumb_parts.append(f"{veg_name}栽培ガイド")
+    breadcrumb = '<div class="breadcrumb">' + "<span>›</span>".join(breadcrumb_parts) + "</div>"
+
+    back_link = f'<a href="../index.html" class="back-link">← {nav_label}に戻る</a>'
+
+    content = wrap_two_column(article_html, toc_html, breadcrumb, back_link)
+
+    title = f"{veg_name}栽培ガイド"
+    out_path = out_dir / (md_path.stem + ".html")
+    out_path.write_text(
+        html_page(title, content, cat, css_path="../style.css"), encoding="utf-8"
+    )
+    return {"title": title, "veg_name": veg_name, "filename": md_path.stem + ".html"}
+
+
 # ── Build article page ────────────────────────────────
 def build_article(md_path: Path, out_dir: Path, cat: dict) -> dict:
     """1 つの MD ファイルを2カラムHTMLに変換して出力する。"""
@@ -292,6 +359,29 @@ def main():
         build_index(articles, out_dir, cat)
         print(f"  ✓ index.html (一覧ページ)")
         total += len(articles) + 1
+
+        # ── Cultivation guides ──────────────────────────
+        cult_src = src_dir / "cultivation"
+        if cult_src.exists():
+            cult_out = out_dir / "cultivation"
+            cult_out.mkdir(parents=True, exist_ok=True)
+
+            # 親記事のファイル名マップ (野菜名 → HTMLファイル名)
+            parent_map = {a["short_name"]: a["filename"] for a in articles}
+            # ファイル名（stem）でもマッチできるようにする
+            for a in articles:
+                stem = a["filename"].replace(".html", "")
+                parent_map[stem] = a["filename"]
+
+            cult_files = sorted(cult_src.glob("*.md"))
+            print(f"\n[{cat_key}/cultivation] 栽培ガイド: {len(cult_files)} files")
+
+            for md_path in cult_files:
+                veg_name = md_path.stem
+                parent_fn = parent_map.get(veg_name)
+                build_cultivation(md_path, cult_out, cat, parent_fn)
+                print(f"  ✓ {md_path.name} → cultivation/{veg_name}.html")
+                total += 1
 
     print(f"\nDone! {total} files generated in {DIST_DIR.relative_to(ROOT)}/")
 
