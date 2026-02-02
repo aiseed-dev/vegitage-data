@@ -49,8 +49,12 @@ def get_items() -> list[tuple[str, str]]:
     return items
 
 
+MAX_RETRIES = 5
+RETRY_DELAYS = [5, 10, 30, 60, 120]  # 秒
+
+
 def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
-    """1品目のアイコンを生成"""
+    """1品目のアイコンを生成（503エラー時リトライ付き）"""
     prompt = PROMPT_TEMPLATE.format(name=name, latin=latin)
 
     contents = [
@@ -65,32 +69,42 @@ def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
         image_config=types.ImageConfig(image_size="1K"),
     )
 
-    try:
-        for chunk in client.models.generate_content_stream(
-            model=MODEL,
-            contents=contents,
-            config=config,
-        ):
-            if (
-                chunk.candidates is None
-                or chunk.candidates[0].content is None
-                or chunk.candidates[0].content.parts is None
+    for attempt in range(MAX_RETRIES):
+        try:
+            for chunk in client.models.generate_content_stream(
+                model=MODEL,
+                contents=contents,
+                config=config,
             ):
+                if (
+                    chunk.candidates is None
+                    or chunk.candidates[0].content is None
+                    or chunk.candidates[0].content.parts is None
+                ):
+                    continue
+
+                for part in chunk.candidates[0].content.parts:
+                    if part.inline_data and part.inline_data.data:
+                        ext = mimetypes.guess_extension(part.inline_data.mime_type) or ".png"
+                        file_path = out_path.with_suffix(ext)
+                        file_path.write_bytes(part.inline_data.data)
+                        print(f"  ✓ {name} → {file_path.name}")
+                        return True
+            print(f"  ✗ {name}: 画像なし")
+            return False
+
+        except Exception as e:
+            err_str = str(e)
+            if "503" in err_str or "overloaded" in err_str.lower():
+                delay = RETRY_DELAYS[attempt]
+                print(f"  ⟳ {name}: 503エラー、{delay}秒後にリトライ ({attempt + 1}/{MAX_RETRIES})")
+                time.sleep(delay)
                 continue
+            print(f"  ✗ {name}: {e}")
+            return False
 
-            for part in chunk.candidates[0].content.parts:
-                if part.inline_data and part.inline_data.data:
-                    ext = mimetypes.guess_extension(part.inline_data.mime_type) or ".png"
-                    file_path = out_path.with_suffix(ext)
-                    file_path.write_bytes(part.inline_data.data)
-                    print(f"  ✓ {name} → {file_path.name}")
-                    return True
-        print(f"  ✗ {name}: 画像なし")
-        return False
-
-    except Exception as e:
-        print(f"  ✗ {name}: {e}")
-        return False
+    print(f"  ✗ {name}: {MAX_RETRIES}回リトライ後も失敗")
+    return False
 
 
 def main():
@@ -135,7 +149,7 @@ def main():
             fail += 1
 
         # レート制限対策
-        time.sleep(2)
+        time.sleep(5)
 
     print(f"\n完了: 成功 {success}, スキップ {skip}, 失敗 {fail}")
 
