@@ -117,7 +117,8 @@ def wrap_tables(html: str) -> str:
 
 
 # ── HTML Templates ─────────────────────────────────────
-def html_page(title: str, body: str, cat: dict, css_path: str = "style.css") -> str:
+def html_page(title: str, body: str, cat: dict,
+              css_path: str = "style.css", index_path: str = "index.html") -> str:
     """公開用HTMLページを生成する。"""
     nav_label = cat["nav_label"]
     footer_text = cat["footer"]
@@ -141,9 +142,9 @@ def html_page(title: str, body: str, cat: dict, css_path: str = "style.css") -> 
 
 <header class="site-header">
   <div class="site-header-inner">
-    <a href="index.html" class="site-logo">Vegitage</a>
+    <a href="{index_path}" class="site-logo">Vegitage</a>
     <nav class="site-nav">
-      <a href="index.html">{nav_label}</a>
+      <a href="{index_path}">{nav_label}</a>
     </nav>
   </div>
 </header>
@@ -299,7 +300,8 @@ def build_subguide(md_path: Path, out_dir: Path, cat: dict,
     title = f"{veg_name}{guide_type}"
     out_path = out_dir / (md_path.stem + ".html")
     out_path.write_text(
-        html_page(title, content, cat, css_path="../style.css"), encoding="utf-8"
+        html_page(title, content, cat, css_path="../style.css",
+                  index_path="../index.html"), encoding="utf-8"
     )
     return {"title": title, "veg_name": veg_name, "filename": md_path.stem + ".html"}
 
