@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
-"""Claude APIで栽培ガイドMDファイルから品種データを抽出するスクリプト"""
+"""Claude Agent SDKで栽培ガイドMDファイルから品種データを抽出するスクリプト
 
+使い方:
+  pip install claude-agent-sdk
+  python scripts/extract_varieties_claude.py
+  python scripts/extract_varieties_claude.py --only オリーブ,ブドウ,メロン
+  python scripts/extract_varieties_claude.py --src web/italian/cuisine
+"""
+
+import asyncio
 import csv
 import json
-import os
 import sys
-import time
-from io import StringIO
 from pathlib import Path
 
-import anthropic
+from claude_agent_sdk import query, ClaudeAgentOptions, AssistantMessage, ResultMessage, TextBlock
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC_DIR = ROOT / "web" / "italian" / "cultivation"
+DEFAULT_SRC_DIR = ROOT / "web" / "italian" / "cultivation"
 OUT_FILE = ROOT / "data" / "extracted_varieties_claude.csv"
-
-MODEL = "claude-sonnet-4-20250514"
 
 SYSTEM_PROMPT = """\
 あなたはイタリア伝統野菜の品種データベース作成を支援するアシスタントです。
@@ -29,16 +32,47 @@ SYSTEM_PROMPT = """\
 - テキスト中に埋め込まれた品種名も抽出すること
 - 品種グループや一般名称（例:「チェリートマト」）ではなく、固有の品種名を抽出
 - 日本の品種（桃太郎、千両ナスなど）は除外
-
-出力形式: JSON配列のみ。説明文不要。
-[
-  {"name_ja": "日本語名", "name_it": "イタリア語名", "region": "産地", "certification": "DOP/IGP/PAT等（なければ空文字）"}
-]
+- 品種が見つからない場合は空配列を返すこと
 """
 
+# 構造化出力スキーマ
+OUTPUT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "varieties": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name_ja": {
+                        "type": "string",
+                        "description": "品種の日本語名"
+                    },
+                    "name_it": {
+                        "type": "string",
+                        "description": "品種のイタリア語名"
+                    },
+                    "region": {
+                        "type": "string",
+                        "description": "産地・地域名"
+                    },
+                    "certification": {
+                        "type": "string",
+                        "description": "認証（DOP/IGP/PAT/De.Co./Slow Food Presidio、なければ空文字）"
+                    }
+                },
+                "required": ["name_ja", "name_it", "region", "certification"],
+                "additionalProperties": False
+            }
+        }
+    },
+    "required": ["varieties"],
+    "additionalProperties": False
+}
 
-def extract_with_claude(client: anthropic.Anthropic, filepath: Path) -> list[dict]:
-    """Claude APIで1ファイルから品種を抽出"""
+
+async def extract_from_file(filepath: Path) -> list[dict]:
+    """Claude Agent SDKで1ファイルから品種を抽出"""
     text = filepath.read_text(encoding="utf-8")
     veg_name = filepath.stem
 
@@ -46,52 +80,60 @@ def extract_with_claude(client: anthropic.Anthropic, filepath: Path) -> list[dic
     if len(text) > 15000:
         text = text[:15000]
 
-    user_msg = f"以下は「{veg_name}」の栽培ガイドです。この文書から品種データを抽出してください。\n\n{text}"
+    prompt = f"以下は「{veg_name}」の栽培ガイドです。この文書から品種データを抽出してください。\n\n{text}"
 
-    for attempt in range(3):
-        try:
-            response = client.messages.create(
-                model=MODEL,
-                max_tokens=4096,
-                system=SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": user_msg}],
-            )
+    options = ClaudeAgentOptions(
+        system_prompt=SYSTEM_PROMPT,
+        model="haiku",
+        max_turns=1,
+        output_format={
+            "type": "json_schema",
+            "schema": OUTPUT_SCHEMA,
+        },
+    )
 
-            result_text = response.content[0].text.strip()
+    result_text = ""
+    try:
+        async for message in query(prompt=prompt, options=options):
+            if isinstance(message, AssistantMessage):
+                for block in message.content:
+                    if isinstance(block, TextBlock):
+                        result_text += block.text
+            elif isinstance(message, ResultMessage):
+                if message.structured_output:
+                    data = message.structured_output
+                    if isinstance(data, str):
+                        data = json.loads(data)
+                    varieties = data.get("varieties", [])
+                    for v in varieties:
+                        v["item"] = veg_name
+                    return varieties
 
-            # JSON配列を抽出
-            start = result_text.find("[")
-            end = result_text.rfind("]") + 1
-            if start >= 0 and end > start:
-                varieties = json.loads(result_text[start:end])
-                # item列を追加
-                for v in varieties:
-                    v["item"] = veg_name
-                return varieties
+        # structured_output がない場合、テキストからパース
+        if result_text:
+            data = json.loads(result_text)
+            varieties = data.get("varieties", [])
+            for v in varieties:
+                v["item"] = veg_name
+            return varieties
 
-            return []
-
-        except anthropic.RateLimitError:
-            delay = 10 * (attempt + 1)
-            print(f"    レート制限、{delay}秒待機...")
-            time.sleep(delay)
-        except Exception as e:
-            print(f"    エラー: {e}")
-            return []
+    except Exception as e:
+        print(f"\n    エラー: {e}")
 
     return []
 
 
-def main():
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        print("ANTHROPIC_API_KEY を設定してください")
-        sys.exit(1)
+async def main():
+    # --src オプション
+    src_dir = DEFAULT_SRC_DIR
+    if "--src" in sys.argv:
+        idx = sys.argv.index("--src")
+        if idx + 1 < len(sys.argv):
+            src_dir = ROOT / sys.argv[idx + 1]
 
-    client = anthropic.Anthropic(api_key=api_key)
-
-    md_files = sorted(SRC_DIR.glob("*.md"))
-    print(f"栽培ガイド: {len(md_files)} ファイル\n")
+    md_files = sorted(src_dir.glob("*.md"))
+    print(f"ソース: {src_dir}")
+    print(f"ファイル数: {len(md_files)}\n")
 
     # --only オプション
     only = None
@@ -107,7 +149,7 @@ def main():
             continue
 
         print(f"  {md.stem}...", end=" ", flush=True)
-        varieties = extract_with_claude(client, md)
+        varieties = await extract_from_file(md)
 
         if varieties:
             print(f"{len(varieties)} 品種")
@@ -115,13 +157,12 @@ def main():
         else:
             print("品種なし")
 
-        # レート制限対策
-        time.sleep(1)
-
     # CSV出力
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["name_ja", "name_it", "item", "region", "certification"])
+        writer = csv.DictWriter(
+            f, fieldnames=["name_ja", "name_it", "item", "region", "certification"]
+        )
         writer.writeheader()
         for v in all_varieties:
             writer.writerow({
@@ -137,4 +178,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
