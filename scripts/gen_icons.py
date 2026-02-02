@@ -107,13 +107,32 @@ def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
     return False
 
 
-def main():
-    api_key = os.environ.get("GOOGLE_API_KEY")
-    if not api_key:
-        print("GOOGLE_API_KEY を設定してください")
-        sys.exit(1)
+def make_client() -> genai.Client:
+    """Vertex AI優先、フォールバックでGemini APIキーを使用"""
+    project = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("VERTEX_PROJECT")
+    location = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
 
-    client = genai.Client(api_key=api_key)
+    if project:
+        print(f"Vertex AI API ({project} / {location})\n")
+        return genai.Client(
+            vertexai=True,
+            project=project,
+            location=location,
+        )
+
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if api_key:
+        print("Gemini API (APIキー)\n")
+        return genai.Client(api_key=api_key)
+
+    print("認証情報が見つかりません。以下のいずれかを設定してください:")
+    print("  Vertex AI: GOOGLE_CLOUD_PROJECT (+ gcloud auth application-default login)")
+    print("  Gemini:    GOOGLE_API_KEY")
+    sys.exit(1)
+
+
+def main():
+    client = make_client()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
