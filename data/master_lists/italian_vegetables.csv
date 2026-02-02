@@ -237,3 +237,57 @@ IT-VEG-RAD-001,Ravanello Lungo o Tabasso,ラバネッロ・ルンゴ,Long Radish
 IT-VEG-RAD-002,Ravanello Lungo di Sestu,セストゥの長ラディッシュ,Sestu Long Radish,ラディッシュ,長ラディッシュ,Sardegna,PAT,pending
 IT-VEG-SAG-001,Salvia di Montevecchia,モンテヴェッキアのセージ,Montevecchia Sage,セージ,地域固有エコタイプ,Lombardia,PAT,pending
 IT-VEG-SAG-002,Salvia di Puglia,プーリアのセージ,Apulian Sage,セージ,伝統セージ,Puglia,PAT,pending
+IT-HZL-001,Tonda Gentile Trilobata,トンダ・ジェンティーレ・トリロバータ,Tonda Gentile Trilobata,ヘーゼルナッツ,Piemonte,Piemonte (Cuneo/Asti/Alessandria),IGP,pending
+IT-HZL-002,Tonda Gentile Romana,トンダ・ジェンティーレ・ロマーナ,Tonda Gentile Romana,ヘーゼルナッツ,Romana,Lazio (Viterbo),DOP,pending
+IT-HZL-003,Nocchione,ノッキオーネ,Nocchione,ヘーゼルナッツ,Romana,Lazio (Viterbo),DOP,pending
+IT-HZL-004,Tonda di Giffoni,トンダ・ディ・ジッフォーニ,Tonda di Giffoni,ヘーゼルナッツ,Giffoni,Campania (Salerno),IGP,pending
+IT-PER-001,Abate Fetel,アバーテ・フェテル,Abate Fetel,西洋梨,Emilia Romagna,Emilia-Romagna,IGP,pending
+IT-PER-002,Conference,コンフェレンス,Conference,西洋梨,,Emilia-Romagna,IGP,pending
+IT-PER-003,Kaiser,カイザー,Kaiser,西洋梨,,Emilia-Romagna,IGP,pending
+IT-PER-004,William,ウィリアム,William,西洋梨,,Emilia-Romagna,IGP,pending
+IT-PER-005,Pera Mantovana,ペーラ・マントヴァーナ,Mantua Pear,西洋梨,Mantovana,Lombardia (Mantova),IGP,pending
+IT-PER-006,Pera Volpina,ペーラ・ヴォルピーナ,Volpina Pear,西洋梨,Tradizionale,Emilia-Romagna (Romagna),Tradizionale,pending
+IT-PER-007,Pera Cocomerina,ペーラ・ココメリーナ,Cocomerina Pear,西洋梨,Tradizionale,Emilia-Romagna,Slow Food Presidio,pending
+IT-PER-008,Pera Madernassa,ペーラ・マデルナッサ,Madernassa Pear,西洋梨,Tradizionale,Piemonte (Cuneo),Tradizionale,pending
+IT-PER-009,Martin Sec,マルティン・セック,Martin Sec,西洋梨,Tradizionale,Piemonte,Tradizionale,pending
+IT-PER-010,Pera Coscia,ペーラ・コッチャ,Coscia Pear,西洋梨,Tradizionale,Sicilia,Tradizionale,pending
+IT-CAP-001,Cappero di Pantelleria (Nocellara),カッペロ・ディ・パンテッレリーア,Pantelleria Caper,カッペリ,Nocellara,Sicilia (Pantelleria),IGP,pending
+IT-CAP-002,Cappero delle Isole Eolie (Nocellara),カッペロ・デッレ・イーゾレ・エオリエ,Aeolian Islands Caper,カッペリ,Nocellara,Sicilia (Isole Eolie),DOP,pending
+IT-CAP-003,Cappero delle Isole Eolie (Nocella),カッペロ・デッレ・イーゾレ・エオリエ,Aeolian Islands Caper,カッペリ,Nocella,Sicilia (Isole Eolie),DOP,pending
+IT-CAP-004,Cappero delle Isole Eolie (Spinoso di Salina),カッペロ・デッレ・イーゾレ・エオリエ,Aeolian Islands Caper,カッペリ,Spinoso di Salina,Sicilia (Salina),DOP,pending
+IT-BET-001,Barbabietola di Chioggia,バルバビエートラ・ディ・キオッジャ,Chioggia Beet,ビーツ,Chioggia,Veneto (Chioggia),PAT,pending
+IT-PSN-001,Pastinaca di Capitignano,パスティナーカ・ディ・カピティニャーノ,Capitignano Parsnip,パースニップ,,Abruzzo (L'Aquila),Slow Food Presidio,pending
+IT-CST-001,Castagna di Montella (Palommina),カスターニャ・ディ・モンテッラ,Montella Chestnut,栗,Palommina,Campania (Avellino),IGP,pending
+IT-CST-002,Marrone del Mugello,マッローネ・デル・ムジェッロ,Mugello Marrone,栗,,Toscana (Firenze),IGP,pending
+IT-CST-003,Castagna Cuneo,カスターニャ・クーネオ,Cuneo Chestnut,栗,,Piemonte (Cuneo),IGP,pending
+IT-CST-004,Castagna del Monte Amiata,カスターニャ・デル・モンテ・アミアータ,Monte Amiata Chestnut,栗,,Toscana (Amiata),IGP,pending
+IT-CST-005,Marrone di San Zeno,マッローネ・ディ・サン・ゼーノ,San Zeno Marrone,栗,,Veneto (Verona),DOP,pending
+IT-CST-006,Castagna di Vallerano,カスターニャ・ディ・ヴァッレラーノ,Vallerano Chestnut,栗,,Lazio (Viterbo),DOP,pending
+IT-CST-007,Farina di Castagne della Lunigiana,ファリーナ・ディ・カスターニェ・デッラ・ルニジャーナ,Lunigiana Chestnut Flour,栗,Farina,Toscana (Lunigiana),DOP,pending
+IT-CST-008,Marrone di Castel del Rio,マッローネ・ディ・カステル・デル・リオ,Castel del Rio Marrone,栗,,Emilia-Romagna (Bologna),IGP,pending
+IT-CST-009,Castagna di Roccamonfina,カスターニャ・ディ・ロッカモンフィナ,Roccamonfina Chestnut,栗,,Campania (Caserta),IGP,pending
+IT-CST-010,Marrone di Serino,マッローネ・ディ・セリーノ,Serino Marrone,栗,,Campania (Avellino),IGP,pending
+IT-ORA-001,Arancia Rossa di Sicilia (Tarocco),アランチャ・ロッサ・ディ・シチリア,Sicilian Blood Orange,オレンジ,Tarocco,Sicilia (Catania/Enna/Siracusa),IGP,pending
+IT-ORA-002,Arancia Rossa di Sicilia (Moro),アランチャ・ロッサ・ディ・シチリア,Sicilian Blood Orange,オレンジ,Moro,Sicilia (Catania),IGP,pending
+IT-ORA-003,Arancia Rossa di Sicilia (Sanguinello),アランチャ・ロッサ・ディ・シチリア,Sicilian Blood Orange,オレンジ,Sanguinello,Sicilia (Catania),IGP,pending
+IT-ORA-004,Arancia di Ribera (Washington Navel),アランチャ・ディ・リベラ,Ribera Orange,オレンジ,Washington Navel,Sicilia (Agrigento),DOP,pending
+IT-ORA-005,Arancia di Ribera (Brasiliano),アランチャ・ディ・リベラ,Ribera Orange,オレンジ,Brasiliano,Sicilia (Agrigento),DOP,pending
+IT-ORA-006,Arancia di Ribera (Navelina),アランチャ・ディ・リベラ,Ribera Orange,オレンジ,Navelina,Sicilia (Agrigento),DOP,pending
+IT-ORA-007,Arancia del Gargano (Bionda),アランチャ・デル・ガルガーノ,Gargano Orange,オレンジ,Bionda,Puglia (Foggia),IGP,pending
+IT-ORA-008,Arancia del Gargano (Duretta),アランチャ・デル・ガルガーノ,Gargano Orange,オレンジ,Duretta,Puglia (Foggia),IGP,pending
+IT-ORA-009,Arancia di Sorrento,アランチャ・ディ・ソッレント,Sorrento Orange,オレンジ,,Campania (Napoli),PAT,pending
+IT-ORA-010,Arancia di Pagani,アランチャ・ディ・パガーニ,Pagani Orange,オレンジ,,Campania (Salerno),PAT,pending
+IT-MAI-001,Mais Marano,マイス・マラーノ,Marano Corn,トウモロコシ,,Veneto (Vicenza),PAT,pending
+IT-MAI-002,Mais Biancoperla,マイス・ビアンコペルラ,Biancoperla Corn,トウモロコシ,,Veneto,PAT/Slow Food,pending
+IT-MAI-003,Mais Spinato di Gandino,マイス・スピナート・ディ・ガンディーノ,Gandino Spinato Corn,トウモロコシ,,Lombardia (Bergamo),De.C.O.,pending
+IT-MAI-004,Mais Nostrano di Storo,マイス・ノストラーノ・ディ・ストーロ,Storo Corn,トウモロコシ,,Trentino,PAT,pending
+IT-MAI-005,Mais Ottofile,マイス・オットフィーレ,Eight-Row Corn,トウモロコシ,,Piemonte,PAT,pending
+IT-MAI-006,Mais Rostrato Rosso di Rovetta,マイス・ロストラート・ロッソ,Rovetta Red Rostrato Corn,トウモロコシ,,Lombardia (Bergamo),PAT,pending
+IT-MAI-007,Mais Triguxianu,マイス・トリグシアヌ,Triguxianu Corn,トウモロコシ,,Sardegna,PAT,pending
+IT-ZUC-001,Zucca Marina di Chioggia,ズッカ・マリーナ・ディ・キオッジャ,Chioggia Sea Pumpkin,カボチャ,,Veneto (Chioggia),PAT,pending
+IT-ZUC-002,Zucca Mantovana,ズッカ・マントヴァーナ,Mantua Pumpkin,カボチャ,,Lombardia (Mantova),PAT,pending
+IT-ZUC-003,Zucca Berrettina di Lungavilla,ズッカ・ベレッティーナ,Lungavilla Berrettina Pumpkin,カボチャ,,Lombardia (Pavia),PAT,pending
+IT-ZUC-004,Zucca Violina di Ferrara,ズッカ・ヴィオリーナ,Ferrara Violin Pumpkin,カボチャ,,Emilia-Romagna (Ferrara),PAT,pending
+IT-ZUC-005,Zucca Lunga di Napoli,ズッカ・ルンガ・ディ・ナポリ,Naples Long Pumpkin,カボチャ,,Campania (Napoli),PAT,pending
+IT-BWH-001,Grano Saraceno di Valtellina,グラノ・サラチェーノ・ディ・ヴァルテッリーナ,Valtellina Buckwheat,そば,,Lombardia (Sondrio),IGP (via Pizzoccheri),pending
+IT-BWH-002,Grano Saraceno di Terragnolo,グラノ・サラチェーノ・ディ・テッラニョーロ,Terragnolo Buckwheat,そば,,Trentino,Slow Food Presidio,pending
