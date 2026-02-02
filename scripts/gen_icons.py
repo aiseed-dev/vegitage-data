@@ -8,12 +8,15 @@ import sys
 import time
 from pathlib import Path
 
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "web" / "italian"
 OUT_DIR = ROOT / "web" / "static" / "icons"
+
+load_dotenv(ROOT / ".env")
 
 MODEL = "gemini-3-pro-image-preview"
 
@@ -91,9 +94,9 @@ def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
 
 
 def main():
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        print("GEMINI_API_KEY を設定してください")
+        print("GOOGLE_API_KEY を設定してください")
         sys.exit(1)
 
     client = genai.Client(api_key=api_key)
