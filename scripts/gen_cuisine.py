@@ -34,11 +34,23 @@ MODEL = os.environ.get("GEMINI_MODEL", "gemini-3-pro-preview")
 
 
 def get_client():
+    """Vertex AI優先、フォールバックでGemini APIキーを使用"""
+    project = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GOOGLE_API_KEY")
+    location = os.environ.get("GOOGLE_CLOUD_LOCATION", "global")
+
+    if project:
+        print(f"Vertex AI API ({project} / {location})")
+        return genai.Client(vertexai=True, project=project, location=location)
+
     api_key = os.environ.get("GOOGLE_API_KEY")
-    if not api_key:
-        print("エラー: GOOGLE_API_KEY が .env に未設定です。")
-        sys.exit(1)
-    return genai.Client(api_key=api_key)
+    if api_key:
+        print("Gemini API (APIキー)")
+        return genai.Client(api_key=api_key)
+
+    print("認証情報が見つかりません。以下のいずれかを設定してください:")
+    print("  Vertex AI: GOOGLE_CLOUD_PROJECT (+ gcloud auth application-default login)")
+    print("  Gemini:    GOOGLE_API_KEY")
+    sys.exit(1)
 
 
 # ── 品種データ読み込み ────────────────────────────────
