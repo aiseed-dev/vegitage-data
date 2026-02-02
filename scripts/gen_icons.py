@@ -50,11 +50,16 @@ def get_items() -> list[tuple[str, str]]:
 
 
 MAX_RETRIES = 5
-RETRY_DELAYS = [5, 10, 30, 60, 120]  # 秒
+RETRY_DELAYS = [5, 10, 30, 60, 120]  # 秒 (503用)
+QUOTA_WAIT = 300  # 秒 (429 RESOURCE_EXHAUSTED用: 5分)
+QUOTA_MAX_RETRIES = 3  # 429の最大リトライ回数
 
 
-def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
-    """1品目のアイコンを生成（503エラー時リトライ付き）"""
+def generate_icon(client_holder: list, name: str, latin: str, out_path: Path) -> bool:
+    """1品目のアイコンを生成（503/429エラー時リトライ付き）
+
+    client_holder は [client] のリスト。429発生時にクライアントを再作成して差し替える。
+    """
     prompt = PROMPT_TEMPLATE.format(name=name, latin=latin)
 
     contents = [
@@ -71,6 +76,7 @@ def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
 
     for attempt in range(MAX_RETRIES):
         try:
+            client = client_holder[0]
             for chunk in client.models.generate_content_stream(
                 model=MODEL,
                 contents=contents,
@@ -95,11 +101,30 @@ def generate_icon(client, name: str, latin: str, out_path: Path) -> bool:
 
         except Exception as e:
             err_str = str(e)
+
+            # 429 RESOURCE_EXHAUSTED: クライアント切断→5分待機→再接続
+            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                quota_attempt = attempt + 1
+                if quota_attempt > QUOTA_MAX_RETRIES:
+                    print(f"  ✗ {name}: RESOURCE_EXHAUSTED {QUOTA_MAX_RETRIES}回リトライ後も失敗")
+                    return False
+                print(f"  ⟳ {name}: 429 RESOURCE_EXHAUSTED 検出 ({quota_attempt}/{QUOTA_MAX_RETRIES})")
+                print(f"    クライアント切断 → {QUOTA_WAIT}秒 (5分) 待機後に再接続...")
+                # クライアント参照を解放
+                client_holder[0] = None
+                time.sleep(QUOTA_WAIT)
+                # 新しいクライアントで再接続
+                client_holder[0] = make_client()
+                print(f"    再接続完了。{name} をリトライします。")
+                continue
+
+            # 503 overloaded: 短い待機でリトライ
             if "503" in err_str or "overloaded" in err_str.lower():
                 delay = RETRY_DELAYS[attempt]
                 print(f"  ⟳ {name}: 503エラー、{delay}秒後にリトライ ({attempt + 1}/{MAX_RETRIES})")
                 time.sleep(delay)
                 continue
+
             print(f"  ✗ {name}: {e}")
             return False
 
@@ -132,7 +157,7 @@ def make_client() -> genai.Client:
 
 
 def main():
-    client = make_client()
+    client_holder = [make_client()]
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -162,7 +187,7 @@ def main():
             skip += 1
             continue
 
-        if generate_icon(client, name, latin, out_path):
+        if generate_icon(client_holder, name, latin, out_path):
             success += 1
         else:
             fail += 1
