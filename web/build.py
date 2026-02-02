@@ -172,8 +172,44 @@ def build_article_body(md_text: str) -> tuple[str, str]:
     return html_body, toc_html
 
 
+# ── Guide navigation buttons ─────────────────────────
+# ボタン定義: (subdir, label)  — None は親記事
+GUIDE_BUTTONS = [
+    (None, "歴史"),
+    ("cultivation", "栽培"),
+    ("cuisine", "料理"),
+]
+
+
+def build_guide_nav(veg_name: str, current: str | None,
+                    available: set[str], prefix: str = "") -> str:
+    """歴史・栽培・料理のナビボタンHTMLを生成する。
+
+    current: 現在のページの subdir (None=親記事, "cultivation", "cuisine")
+    available: 存在するサブガイドの subdir 集合
+    prefix: リンクの接頭辞 ("" for 親記事, "../" for サブガイド)
+    """
+    buttons = []
+    for subdir, label in GUIDE_BUTTONS:
+        is_current = (subdir == current)
+        if is_current:
+            buttons.append(f'<span class="guide-nav-current">{label}</span>')
+        elif subdir is None:
+            # 親記事へのリンク
+            href = f'{prefix}{veg_name}.html'
+            buttons.append(f'<a href="{href}">{label}</a>')
+        elif subdir in available:
+            # サブガイドへのリンク
+            if current is None:
+                href = f'{subdir}/{veg_name}.html'
+            else:
+                href = f'../{subdir}/{veg_name}.html'
+            buttons.append(f'<a href="{href}">{label}</a>')
+    return '<nav class="guide-nav">' + "".join(buttons) + "</nav>"
+
+
 # ── 2-column layout wrapper ──────────────────────────
-def wrap_two_column(article_html: str, toc_html: str, breadcrumb: str, back_link: str) -> str:
+def wrap_two_column(article_html: str, toc_html: str, guide_nav: str, back_link: str) -> str:
     """本文HTMLを2カラムの公開用レイアウトに入れ込む。"""
     sidebar = f"""<aside class="sidebar">
   <div class="sidebar-toc">
@@ -185,7 +221,7 @@ def wrap_two_column(article_html: str, toc_html: str, breadcrumb: str, back_link
   </div>
 </aside>"""
 
-    return f"""{breadcrumb}
+    return f"""{guide_nav}
 <div class="two-column">
   <div class="column-main">
     <article class="article-content">
@@ -243,7 +279,8 @@ SUBGUIDES = {
 
 # ── Build sub-guide page ────────────────────────────
 def build_subguide(md_path: Path, out_dir: Path, cat: dict,
-                   guide_type: str, parent_filename: str | None = None) -> dict:
+                   subdir: str, guide_type: str,
+                   available_guides: set[str]) -> dict:
     """サブガイドMDを前処理してHTMLに変換する。"""
     veg_name = md_path.stem
     text = md_path.read_text(encoding="utf-8")
@@ -251,17 +288,13 @@ def build_subguide(md_path: Path, out_dir: Path, cat: dict,
 
     article_html, toc_html = build_article_body(text)
 
-    nav_label = cat["nav_label"]
-    # パンくず: 一覧 > 野菜名 > ガイド名
-    breadcrumb_parts = [f'<a href="../index.html">{nav_label}</a>']
-    if parent_filename:
-        breadcrumb_parts.append(f'<a href="../{parent_filename}">{veg_name}</a>')
-    breadcrumb_parts.append(f"{veg_name}{guide_type}")
-    breadcrumb = '<div class="breadcrumb">' + "<span>›</span>".join(breadcrumb_parts) + "</div>"
+    guide_nav = build_guide_nav(veg_name, current=subdir,
+                                available=available_guides, prefix="../")
 
+    nav_label = cat["nav_label"]
     back_link = f'<a href="../index.html" class="back-link">← {nav_label}に戻る</a>'
 
-    content = wrap_two_column(article_html, toc_html, breadcrumb, back_link)
+    content = wrap_two_column(article_html, toc_html, guide_nav, back_link)
 
     title = f"{veg_name}{guide_type}"
     out_path = out_dir / (md_path.stem + ".html")
@@ -272,24 +305,22 @@ def build_subguide(md_path: Path, out_dir: Path, cat: dict,
 
 
 # ── Build article page ────────────────────────────────
-def build_article(md_path: Path, out_dir: Path, cat: dict) -> dict:
+def build_article(md_path: Path, out_dir: Path, cat: dict,
+                  available_guides: set[str] | None = None) -> dict:
     """1 つの MD ファイルを2カラムHTMLに変換して出力する。"""
     text = md_path.read_text(encoding="utf-8")
     meta = extract_metadata(text)
 
     article_html, toc_html = build_article_body(text)
 
+    veg_name = md_path.stem
+    guide_nav = build_guide_nav(veg_name, current=None,
+                                available=available_guides or set())
+
     nav_label = cat["nav_label"]
-    breadcrumb = (
-        '<div class="breadcrumb">'
-        f'<a href="index.html">{nav_label}</a>'
-        "<span>›</span>"
-        f"{meta['short_name']}"
-        "</div>"
-    )
     back_link = f'<a href="index.html" class="back-link">← {nav_label}に戻る</a>'
 
-    content = wrap_two_column(article_html, toc_html, breadcrumb, back_link)
+    content = wrap_two_column(article_html, toc_html, guide_nav, back_link)
 
     out_path = out_dir / (md_path.stem + ".html")
     out_path.write_text(html_page(meta["title"], content, cat), encoding="utf-8")
@@ -352,13 +383,23 @@ def main():
         # Copy CSS
         shutil.copy2(STATIC_DIR / "style.css", out_dir / "style.css")
 
+        # ── サブガイドの存在マップを先にスキャン ────
+        # veg_name → {存在するsubdir集合}
+        guides_map: dict[str, set[str]] = {}
+        for subdir in SUBGUIDES:
+            sub_src = src_dir / subdir
+            if sub_src.exists():
+                for p in sub_src.glob("*.md"):
+                    guides_map.setdefault(p.stem, set()).add(subdir)
+
         # Build each article
         articles = []
         md_files = sorted(src_dir.glob("*.md"))
         print(f"\n[{cat_key}] {cat['title']}: {len(md_files)} files")
 
         for md_path in md_files:
-            meta = build_article(md_path, out_dir, cat)
+            available = guides_map.get(md_path.stem, set())
+            meta = build_article(md_path, out_dir, cat, available)
             meta["filename"] = md_path.stem + ".html"
             articles.append(meta)
             print(f"  ✓ {md_path.name} → {meta['filename']}")
@@ -369,12 +410,6 @@ def main():
         total += len(articles) + 1
 
         # ── Sub-guides (cultivation, cuisine, ...) ────
-        # 親記事のファイル名マップ (野菜名 → HTMLファイル名)
-        parent_map = {a["short_name"]: a["filename"] for a in articles}
-        for a in articles:
-            stem = a["filename"].replace(".html", "")
-            parent_map[stem] = a["filename"]
-
         for subdir, guide_type in SUBGUIDES.items():
             sub_src = src_dir / subdir
             if not sub_src.exists():
@@ -387,8 +422,8 @@ def main():
 
             for md_path in sub_files:
                 veg_name = md_path.stem
-                parent_fn = parent_map.get(veg_name)
-                build_subguide(md_path, sub_out, cat, guide_type, parent_fn)
+                available = guides_map.get(veg_name, set())
+                build_subguide(md_path, sub_out, cat, subdir, guide_type, available)
                 print(f"  ✓ {md_path.name} → {subdir}/{veg_name}.html")
                 total += 1
 
