@@ -52,7 +52,7 @@ CATEGORIES = {
 
 ```
 GOOGLE_API_KEY=your_api_key_here
-GEMINI_MODEL=gemini-2.5-pro-preview-06-05   # 省略時のデフォルト
+GEMINI_MODEL=gemini-3-pro-preview   # 省略時のデフォルト
 ```
 
 ```bash
